@@ -1,0 +1,76 @@
+<main class="patient-registration-page">
+	<div class="container py-4 py-lg-5">
+		<div class="registration-card overflow-hidden">
+            @if(showBanner){
+			<section class="registration-banner">
+				<div class="banner-brand">
+					<span class="banner-mark" aria-hidden="true">
+						<span></span>
+						<span></span>
+					</span>
+					<span>CarePoint Hospital</span>
+				</div>
+				<div class="row align-items-end g-4">
+					<div class="col-lg-8">
+						<p class="banner-eyebrow mb-2">Your health, thoughtfully coordinated</p>
+						<h1 class="mb-3">Register to make your appointment.</h1>
+						<p class="banner-copy mb-0">
+							Create your patient profile in a few simple steps and connect with the right care team.
+						</p>
+					</div>
+					<div class="col-lg-4">
+						<div class="banner-note">
+							<span class="banner-note-icon" aria-hidden="true">+</span>
+							<span>Appointments made easier, from your first visit onward.</span>
+						</div>
+					</div>
+				</div>
+			</section>
+            }
+
+			<section class="registration-form-section">
+				<div class="form-intro d-flex flex-wrap justify-content-between align-items-start gap-3 mb-4">
+					<div>
+						<p class="section-eyebrow mb-2">Patient details</p>
+						<h2 class="mb-1">Tell us about yourself</h2>
+						<p class="section-copy mb-0">We use these details to prepare your appointment.</p>
+					</div>
+					<span class="required-note"><span aria-hidden="true">*</span> Required fields</span>
+				</div>
+
+				<form class="row g-3" [formGroup]="patientForm">
+					<div class="col-md-6">
+						<label class="form-label" for="fullName">Full name <span aria-hidden="true">*</span></label>
+						<input formControlName="fullName" class="form-control" id="fullName" name="fullName" type="text" placeholder="Enter your full name" autocomplete="name" />
+					</div>
+					<div class="col-md-6">
+						<label class="form-label" for="phone">Phone number <span aria-hidden="true">*</span></label>
+						<input formControlName="phone" class="form-control" id="phone" name="phone" type="tel" placeholder="Enter your phone number" autocomplete="tel" />
+					</div>
+					<div class="col-md-6">
+						<label class="form-label" for="gender">Gender <span aria-hidden="true">*</span></label>
+						<select formControlName="gender" class="form-select" id="gender" name="gender">
+							<option selected disabled value="">Select gender</option>
+							<option>Female</option>
+							<option>Male</option>
+							<option>Other</option>
+							<option>Prefer not to say</option>
+						</select>
+					</div>
+					<div class="col-md-6">
+						<label class="form-label" for="dateOfBirth">Date of birth <span aria-hidden="true">*</span></label>
+						<input class="form-control" formControlName="dateOfBirth" id="dateOfBirth" name="dateOfBirth" type="date" />
+					</div>
+					<div class="col-12">
+						<label class="form-label" for="address">Address <span aria-hidden="true">*</span></label>
+						<textarea class="form-control" formControlName="address" id="address" name="address" rows="3" placeholder="Enter your complete address"></textarea>
+					</div>
+					<div class="col-12 d-flex flex-column flex-sm-row align-items-sm-center justify-content-between gap-3 pt-2">
+						<p class="privacy-note mb-0"><span aria-hidden="true">&#128274;</span> Your information is kept private and secure.</p>
+						<button (click)="onSaveForm()" class="btn btn-primary register-button" type="submit">Continue to appointment <span aria-hidden="true">&#8594;</span></button>
+					</div>
+				</form>
+			</section>
+		</div>
+	</div>
+</main>

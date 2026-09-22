@@ -1,0 +1,236 @@
+.patient-registration-page {
+	min-height: 100vh;
+	background:
+		radial-gradient(circle at 88% 5%, rgba(20, 184, 166, 0.12), transparent 25%),
+		linear-gradient(135deg, var(--very-light-blue) 0%, #eff6ff 100%);
+}
+
+.registration-card {
+	max-width: 980px;
+	margin: 0 auto;
+	border: 1px solid var(--light-border);
+	border-radius: 16px;
+	background: var(--card-white);
+	box-shadow: 0 20px 55px rgba(30, 64, 175, 0.12);
+}
+
+.registration-banner {
+	position: relative;
+	overflow: hidden;
+	padding: 30px clamp(24px, 5vw, 58px) 34px;
+	color: var(--card-white);
+	background: linear-gradient(115deg, var(--deep-blue) 0%, var(--medical-blue) 72%, #1d73de 100%);
+}
+
+.registration-banner::after {
+	position: absolute;
+	content: '';
+	width: 250px;
+	height: 250px;
+	right: -80px;
+	top: -150px;
+	border: 34px solid rgba(20, 184, 166, 0.28);
+	border-radius: 50%;
+}
+
+.banner-brand,
+.banner-eyebrow,
+.registration-banner h1,
+.banner-copy,
+.banner-note {
+	position: relative;
+	z-index: 1;
+}
+
+.banner-brand {
+	display: inline-flex;
+	align-items: center;
+	gap: 10px;
+	margin-bottom: 36px;
+	font-family: 'Manrope', sans-serif;
+	font-size: 1rem;
+	font-weight: 700;
+}
+
+.banner-mark {
+	position: relative;
+	display: block;
+	width: 32px;
+	height: 32px;
+	border-radius: 9px;
+	background: var(--teal);
+}
+
+.banner-mark span {
+	position: absolute;
+	top: 6px;
+	left: 13px;
+	width: 6px;
+	height: 20px;
+	border-radius: 3px;
+	background: var(--card-white);
+}
+
+.banner-mark span + span {
+	top: 13px;
+	left: 6px;
+	width: 20px;
+	height: 6px;
+}
+
+.banner-eyebrow,
+.section-eyebrow {
+	color: var(--teal);
+	font-size: 0.7rem;
+	font-weight: 700;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+}
+
+.registration-banner h1 {
+	max-width: 610px;
+	font-family: 'Manrope', sans-serif;
+	font-size: clamp(1.8rem, 4vw, 2.75rem);
+	font-weight: 800;
+	letter-spacing: -0.04em;
+}
+
+.banner-copy {
+	max-width: 590px;
+	color: #dbeafe;
+	font-size: 0.93rem;
+	line-height: 1.6;
+}
+
+.banner-note {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	max-width: 270px;
+	margin-left: auto;
+	padding: 14px;
+	border: 1px solid rgba(255, 255, 255, 0.2);
+	border-radius: 10px;
+	color: #dbeafe;
+	background: rgba(15, 23, 42, 0.14);
+	font-size: 0.75rem;
+	line-height: 1.45;
+}
+
+.banner-note-icon {
+	display: grid;
+	width: 28px;
+	height: 28px;
+	flex: 0 0 28px;
+	place-items: center;
+	border-radius: 50%;
+	color: var(--card-white);
+	background: var(--teal);
+	font-size: 1.2rem;
+}
+
+.registration-form-section {
+	padding: 32px clamp(24px, 5vw, 58px) 38px;
+}
+
+.form-intro h2 {
+	color: var(--dark-navy);
+	font-family: 'Manrope', sans-serif;
+	font-size: 1.35rem;
+	font-weight: 700;
+}
+
+.section-copy,
+.required-note,
+.privacy-note,
+.registration-footer {
+	color: var(--slate-gray);
+	font-size: 0.78rem;
+}
+
+.required-note span,
+.form-label span {
+	color: var(--danger-red);
+}
+
+.form-label {
+	color: var(--dark-navy);
+	font-size: 0.8rem;
+	font-weight: 600;
+}
+
+.form-control,
+.form-select {
+	min-height: 44px;
+	border-color: var(--light-border);
+	border-radius: 7px;
+	color: var(--dark-navy);
+	font-size: 0.84rem;
+}
+
+textarea.form-control {
+	min-height: 82px;
+	resize: vertical;
+}
+
+.form-control::placeholder {
+	color: #94a3b8;
+}
+
+.form-control:focus,
+.form-select:focus {
+	border-color: var(--medical-blue);
+	box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+.privacy-note span {
+	color: var(--success-green);
+}
+
+.register-button {
+	min-height: 42px;
+	padding: 0 20px;
+	border: 0;
+	border-radius: 7px;
+	background: var(--medical-blue);
+	font-size: 0.82rem;
+	font-weight: 700;
+}
+
+.register-button:hover,
+.register-button:focus {
+	background: var(--deep-blue);
+}
+
+.register-button span {
+	margin-left: 8px;
+	font-size: 1.05rem;
+}
+
+.registration-footer a {
+	color: var(--medical-blue);
+	font-weight: 600;
+	text-decoration: none;
+}
+
+@media (max-width: 575.98px) {
+	.registration-banner {
+		padding: 24px 20px 28px;
+	}
+
+	.banner-brand {
+		margin-bottom: 28px;
+	}
+
+	.banner-note {
+		margin-left: 0;
+	}
+
+	.registration-form-section {
+		padding: 26px 20px 30px;
+	}
+
+	.register-button {
+		width: 100%;
+	}
+}

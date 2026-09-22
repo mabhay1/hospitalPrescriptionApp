@@ -7,7 +7,8 @@ export const GlobalConstant = {
         FILTER_USER: 'staff?roleName=',
         GET_ALL_MEDICINES:'medicines',
         GET_MEDICINE_BY_ID:'medicines/',
-        FILTER_MEDICINE:'medicines?search='
+        FILTER_MEDICINE:'medicines?search=',
+        GET_ALL_PATIENTS:'patients'
     },
     LOGIN_USER_SESSION_KEY:'hospitalUser',
     LOGIN_TOKEN_SESSION_KEY:'hospitalUserToken',

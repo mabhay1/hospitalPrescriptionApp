@@ -1,0 +1,84 @@
+<div class="container-fluid py-3">
+    <div class="row g-3">
+
+        <!-- User List -->
+        <div [ngClass]="isPatientFormVisible?'col-8':'col-12'">
+            <div class="card border-primary">
+
+                <div class="card-header bg-primary d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">User List</h5>
+
+                    <div>
+                        <button (click)="openClosePatientForm(true)" type="button" class="btn btn-secondary">
+                            Add User
+                        </button>
+                    </div>
+                </div>
+
+                <div class="card-body">
+
+                    <table class="table table-bordered table-hover">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Sr. No.</th>
+                                <th>Full Name</th>
+                                <th>Gender</th>
+                                <th>Date of Birth</th>
+                                <th>Phone</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @for (patient of patientList(); track $index) {
+                            <tr>
+                                <td>{{$index+1}}</td>
+                                <td>{{patient.fullName}}</td>
+                                <td>{{patient.gender}}</td>
+                                <td>{{patient.dateOfBirth|date:'MMM dd, yyyy, hh:mm'}}</td>
+                                <td>{{patient.phone}}</td>
+                                <td>
+                                    <button class="btn btn-sm btn-warning mx-2">Edit</button>
+                                    <button class="btn btn-sm btn-danger">Delete</button>
+                                </td>
+                            </tr>
+                            }
+                            @empty {
+                            <tr>
+                                <td colspan="7" class="text-center">
+                                    No users found
+                                </td>
+                            </tr>
+                            }
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+
+
+        <!-- User Form -->
+        @if (isPatientFormVisible) {
+        <div class="col-4">
+            <div class="card border-primary">
+                <div class="card-header bg-primary d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">User Details</h5>
+
+                    <div>
+                        <button (click)="openClosePatientForm(false)" type="button" class="btn btn-secondary">
+                            Close
+                        </button>
+                    </div>
+                </div>
+
+                <div class="card-body">
+                    <app-register-patient [showBanner]="false"></app-register-patient>
+
+                </div>
+            </div>
+        </div>
+        }
+
+    </div>
+</div>
