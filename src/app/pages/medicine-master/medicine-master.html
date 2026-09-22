@@ -1,0 +1,175 @@
+<div class="container-fluid py-3">
+    <div class="row g-3">
+        
+        <!-- Medicine List -->
+        <div class="col-12">
+
+            <!-- Search -->
+            <div class="row mb-3">
+                <div class="col-2 offset-md-8">
+                    <input #searchInput type="text" class="form-control" placeholder="Search Medicine">
+                </div>
+
+                <div class="col-2 text-end">
+                    <button type="button" class="btn btn-sm btn-primary mx-2" (click)="onSearchMedicine()">
+                        Search
+                    </button>
+
+                    <button type="button" class="btn btn-sm btn-secondary" (click)="onResetSearch()">
+                        Reset
+                    </button>
+                </div>
+            </div>
+
+            <!-- Medicine Card -->
+            <div class="card border-primary">
+
+                <div class="card-header bg-primary d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Medicine List</h5>
+
+                    <button type="button" class="btn btn-secondary" (click)="openCloseMedicineModel(true)">
+                        Add Medicine
+                    </button>
+                </div>
+
+                <div class="card-body">
+
+                    <table class="table table-bordered table-hover mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Sr. No.</th>
+                                <th>Medicine Name</th>
+                                <th>Strength</th>
+                                <th>Form</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                            @for (item of medicineList(); track $index) {
+                            <tr>
+                                <td>{{$index+1}}</td>
+                                <td>{{item.name}}</td>
+                                <td>{{item.strength}}</td>
+                                <td>{{item.form}}</td>
+                                <td>
+                                    <button type="button" class="btn btn-sm btn-warning mx-2" (click)="onEditMedicine(item.medicineId)">
+                                        Edit
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-danger" (click)="onDeleteMedicine(item.medicineId)">
+                                        Delete
+                                    </button>
+                                </td>
+                            </tr>
+                            }
+
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<!-- Medicine Modal -->
+<div class="modal" #medicineModal tabindex="-1" aria-labelledby="medicineModalLabel" aria-hidden="true">
+
+    <div class="modal-dialog modal-dialog-centered">
+
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="medicineModalLabel">
+                    Medicine Details
+                </h5>
+
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"
+                    (click)="openCloseMedicineModel(false)">
+                </button>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="modal-body">
+
+                <form>
+
+                    <!-- Medicine Name -->
+                    <div class="mb-3">
+                        <label for="medicineName" class="form-label">
+                            Medicine Name
+                        </label>
+
+                        <input type="text" id="medicineName" class="form-control" placeholder="Enter medicine name"
+                            [formField]="medicineForm.name">
+
+                        @if (medicineForm.name().touched()||medicineForm.name().dirty()) {
+                        @for (item of medicineForm.name().errors(); track $index) {
+                        <div class="text-danger">{{item.message}}</div>
+                        }
+                        }
+                    </div>
+
+                    <!-- Strength -->
+                    <div class="mb-3">
+                        <label for="strength" class="form-label">
+                            Strength
+                        </label>
+
+                        <input type="text" id="strength" class="form-control" placeholder="e.g. 500 mg"
+                            [formField]="medicineForm.strength">
+                        @if(medicineForm.strength().touched()||medicineForm.strength().dirty()){
+                            @for (item of medicineForm.strength().errors(); track $index) {
+                                <div class="text-danger">{{item.message}}</div>
+                            }
+                        }    
+                    </div>
+
+                    <!-- Form -->
+                    <div class="mb-3">
+                        <label for="medicineForm" class="form-label">
+                            Form
+                        </label>
+
+                        <select id="medicineForm" class="form-select" [formField]="medicineForm.form">
+                            <option value="" selected disabled>
+                                Select Form
+                            </option>
+                            <option *ngFor="let item of medicineFormList">{{item}}</option>
+                        </select>
+                        @if(medicineForm.form().touched()||medicineForm.form().dirty()){
+                            @for (item of medicineForm.form().errors(); track $index) {
+                                <div class="text-danger">{{item.message}}</div>
+                            }
+                        }   
+                    </div>
+
+                </form>
+
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="modal-footer">
+
+                <button type="button" class="btn btn-secondary" (click)="onResetForm()">
+                    Reset
+                </button>
+                @if (currentMedicineid===0) {
+                    <button type="button" class="btn btn-success" (click)="onSaveMedicine()">
+                        Save Medicine
+                    </button>
+                }@else {
+                    <button type="button" class="btn btn-warning" (click)="onUpdateMedicine()">
+                        Update Medicine
+                    </button>
+                }
+
+            </div>
+
+        </div>
+    </div>
+</div>

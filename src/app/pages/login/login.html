@@ -1,0 +1,88 @@
+<main class="login-page">
+	<section class="login-panel container-fluid">
+		<div class="row g-0 login-shell">
+			<div class="col-lg-6 login-intro">
+				<div class="intro-content">
+					<div class="brand-mark" aria-hidden="true">
+						<span></span>
+						<span></span>
+					</div>
+					<p class="eyebrow">Hospital care, connected</p>
+					<h1>Better care starts with a clearer view.</h1>
+					<p class="intro-copy">
+						Keep every visit, prescription, and patient detail close at hand so
+						your team can spend more time focused on care.
+					</p>
+					<div class="care-note">
+						<div class="care-note-icon" aria-hidden="true">+</div>
+						<div>
+							<strong>One secure workspace</strong>
+							<span>For every step of the patient journey</span>
+						</div>
+					</div>
+				</div>
+				<div class="intro-footer">
+					<span class="status-dot"></span>
+					<span>Designed for clinical teams</span>
+				</div>
+			</div>
+
+			<div class="col-lg-6 login-form-side">
+				<div class="login-form-wrap">
+					<div class="form-heading">
+						<p class="eyebrow">Welcome back</p>
+						<h2>Sign in to your account</h2>
+						<p>Enter your details to continue to the hospital workspace.</p>
+					</div>
+
+					<form class="login-form">
+						<div class="mb-3">
+							<label class="form-label" for="email">Work email</label>
+							<input
+								class="form-control form-control-lg"
+								id="email"
+								name="email"
+                                [(ngModel)]="loginObj.email"
+								type="email"
+								placeholder="you@hospital.com"
+								autocomplete="email"
+							/>
+						</div>
+
+						<div class="mb-3">
+							<div class="password-label-row">
+								<label class="form-label" for="password">Password</label>
+								<a href="#forgot-password">Forgot password?</a>
+							</div>
+							<input
+								class="form-control form-control-lg"
+								id="password"
+								name="password"
+                                [(ngModel)]="loginObj.password"
+								type="password"
+								placeholder="Enter your password"
+								autocomplete="current-password"
+							/>
+						</div>
+
+						<div class="form-check remember-row">
+							<input class="form-check-input" type="checkbox" id="remember" />
+							<label class="form-check-label" for="remember">Remember me</label>
+						</div>
+
+						<button class="btn btn-primary btn-lg w-100 login-button" (click)="login()" type="submit">
+							Sign in
+							<span aria-hidden="true">&#8594;</span>
+						</button>
+					</form>
+
+					<div class="security-note">
+						<span class="lock-icon" aria-hidden="true">&#9679;</span>
+						<span>Your information is protected with secure access.</span>
+					</div>
+				</div>
+				<p class="copyright">&copy; 2026 CarePoint Hospital Systems</p>
+			</div>
+		</div>
+	</section>
+</main>

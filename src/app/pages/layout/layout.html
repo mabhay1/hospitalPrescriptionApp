@@ -1,0 +1,149 @@
+<div class="layout-shell">
+	<aside class="sidebar" [ngClass]="isSideBarCollapsed?'sidebar--collapsed':''" aria-label="Primary navigation">
+		<div class="sidebar-header">
+			<a class="sidebar-brand" href="#" aria-label="Hospital prescription home">
+				<span class="brand-mark" aria-hidden="true">
+					<span></span>
+					<span></span>
+				</span>
+				<span class="brand-name">CarePoint</span>
+			</a>
+			<button class="sidebar-toggle" (click)="toggleSidebar()" type="button" aria-label="Collapse sidebar">
+				<svg viewBox="0 0 24 24" aria-hidden="true">
+					<path d="M15 6 9 12l6 6" />
+				</svg>
+			</button>
+		</div>
+
+		<div class="sidebar-divider"></div>
+
+		<nav class="sidebar-nav">
+			<a class="sidebar-link" href="#home" aria-current="page" routerLinkActive="active">
+				<svg viewBox="0 0 24 24" aria-hidden="true">
+					<path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1V10Z" />
+				</svg>
+				<span>Home</span>
+			</a>
+			<a class="sidebar-link" href="#dashboard" routerLinkActive="active">
+				<svg viewBox="0 0 24 24" aria-hidden="true">
+					<path d="M4 14a8 8 0 1 1 16 0" />
+					<path d="m12 14 4-4M4 14h16M12 6v1M6.3 8.3l.7.7M17.7 8.3l-.7.7" />
+				</svg>
+				<span>Dashboard</span>
+			</a>
+			<a class="sidebar-link" routerLink="/users" routerLinkActive="active">
+				<svg viewBox="0 0 24 24" aria-hidden="true">
+					<circle cx="9" cy="8" r="3" />
+					<path d="M3 20a6 6 0 0 1 12 0M16 11a3 3 0 1 0 0-6M16 14a5 5 0 0 1 5 5" />
+				</svg>
+				<span>Staff</span>
+			</a>
+			<a class="sidebar-link" routerLink="/medicine" routerLinkActive="active">
+				<svg viewBox="0 0 24 24" aria-hidden="true">
+					<path d="m8.5 3.5 12 12-5 5-12-12a3.54 3.54 0 0 1 5-5Z" />
+					<path d="m13 8-5 5M5.5 18.5h.01M9.5 14.5h.01" />
+				</svg>
+				<span>Medicines</span>
+			</a>
+			<a class="sidebar-link" href="#appointments" routerLinkActive="active">
+				<svg viewBox="0 0 24 24" aria-hidden="true">
+					<rect x="3" y="4" width="18" height="17" rx="2" />
+					<path d="M3 9h18M8 4v3M16 4v3M8 13h.01M12 13h.01M16 13h.01M8 17h.01M12 17h.01" />
+				</svg>
+				<span>Appointments</span>
+			</a>
+			<a class="sidebar-link" href="#prescriptions" routerLinkActive="active">
+				<svg viewBox="0 0 24 24" aria-hidden="true">
+					<path d="M7 3h8l4 4v14H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z" />
+					<path d="M14 3v5h5M8 13h8M8 17h5M8 9h2" />
+				</svg>
+				<span>Prescriptions</span>
+			</a>
+
+			<a class="sidebar-link" href="#doctors" routerLinkActive="active">
+				<svg viewBox="0 0 24 24" aria-hidden="true">
+					<circle cx="12" cy="8" r="3" />
+					<path d="M5 21a7 7 0 0 1 14 0M19 8h3M20.5 6.5v3" />
+				</svg>
+				<span>Doctor registration</span>
+			</a>
+		</nav>
+
+		<div class="sidebar-footer">
+			<div class="profile-card">
+				<div class="profile-avatar">{{loggedUserData.fullName.slice(0,2).toUpperCase()}}</div>
+				<div class="profile-copy">
+					<strong>{{loggedUserData.fullName}}</strong>
+					<span>{{loggedUserData.roleName}}</span>
+				</div>
+				<button class="profile-menu" type="button" aria-label="Open profile menu">
+					<svg viewBox="0 0 24 24" aria-hidden="true">
+						<path d="m7 10 5 5 5-5" />
+					</svg>
+				</button>
+			</div>
+			<button class="logout-button" type="button" (click)="onLogout()">
+				<svg viewBox="0 0 24 24" aria-hidden="true">
+					<path d="M10 17l5-5-5-5M15 12H3M21 19V5a2 2 0 0 0-2-2h-6" />
+				</svg>
+				<span>Log out</span>
+			</button>
+		</div>
+	</aside>
+
+	<main class="layout-content">
+		<header class="topbar">
+			<div class="container-fluid px-0">
+				<div class="row align-items-center g-3">
+					<div class="col-12 col-xl-4">
+						<div class="page-context text-nowrap">
+							<p class="topbar-eyebrow mb-1">Hospital workspace</p>
+							<h1 class="topbar-title mb-0">Good morning, {{loggedUserData.fullName}}</h1>
+						</div>
+					</div>
+
+					<div class="col-12 col-xl-5">
+						<div class="input-group topbar-search shadow-sm">
+							<span class="input-group-text" aria-hidden="true">
+								<svg viewBox="0 0 24 24">
+									<circle cx="11" cy="11" r="6.5"></circle>
+									<path d="m16 16 4.5 4.5"></path>
+								</svg>
+							</span>
+							<input class="form-control" type="search" placeholder="Search patients, staff, medicines..." aria-label="Search hospital workspace" />
+							<button class="btn btn-primary search-button" type="button">Search</button>
+						</div>
+					</div>
+
+					<div class="col-12 col-xl-3">
+						<div class="topbar-actions d-flex align-items-center justify-content-xl-end gap-2">
+							<button class="topbar-icon-button" type="button" aria-label="Help and support">
+								<svg viewBox="0 0 24 24" aria-hidden="true">
+									<circle cx="12" cy="12" r="9"></circle>
+									<path d="M9.7 9a2.4 2.4 0 1 1 4.1 1.7c-1 .9-1.8 1.2-1.8 2.8M12 17h.01"></path>
+								</svg>
+							</button>
+							<button class="topbar-icon-button notification-button" type="button" aria-label="View notifications">
+								<svg viewBox="0 0 24 24" aria-hidden="true">
+									<path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"></path>
+								</svg>
+								<span class="notification-dot"></span>
+							</button>
+							<div class="topbar-user d-flex align-items-center gap-2 ms-xl-2 text-nowrap">
+								<div class="topbar-avatar">{{loggedUserData.fullName.slice(0,2).toUpperCase()}}</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</header>
+
+		<div class="layout-page-content container-fluid">
+			<div class="row">
+				<div class="col-12 px-0">
+					<router-outlet></router-outlet>
+				</div>
+			</div>
+		</div>
+	</main>
+</div>

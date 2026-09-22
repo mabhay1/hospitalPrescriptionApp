@@ -1,1 +1,19 @@
-/* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap');
+
+:root {
+	--medical-blue: #2563eb;
+	--deep-blue: #1e40af;
+	--teal: #14b8a6;
+	--very-light-blue: #f8fafc;
+	--card-white: #ffffff;
+	--dark-navy: #1e293b;
+	--slate-gray: #64748b;
+	--light-border: #e2e8f0;
+	--success-green: #10b981;
+	--warning-amber: #f59e0b;
+	--danger-red: #ef4444;
+	font-family: 'DM Sans', sans-serif;
+	color: var(--dark-navy);
+	background: var(--very-light-blue);
+}
+

@@ -1,0 +1,187 @@
+<div class="container-fluid py-3">
+    <div class="row g-3">
+
+        <!-- User List -->
+        <div [ngClass]="isUserFormVisible?'col-8':'col-12'">
+            <div class="row">
+                <div class="col-2 offset-md-8">
+                    <select class="form-select" #selectedRole>
+                        <option value="">Search Role</option>
+                        @for (item of rolesList; track $index) {
+                        <option>{{item}}</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-2 text-end">
+                    <button class="btn btn-sm btn-primary mx-2" (click)="onSearchRole()">Search</button>
+                    <button class="btn btn-sm btn-secondary" (click)="onResetRoleSearch()">Reset</button>
+                </div>
+            </div>
+            <div class="card border-primary">
+
+                <div class="card-header bg-primary d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">User List</h5>
+
+                    <div>
+                        <button (click)="openCloseUserForm(true)" type="button" class="btn btn-secondary">
+                            Add User
+                        </button>
+                    </div>
+                </div>
+
+                <div class="card-body">
+
+                    <table class="table table-bordered table-hover">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Sr. No.</th>
+                                <th>Full Name</th>
+                                <th>Email</th>
+                                <th>Mobile No.</th>
+                                <th>Role</th>
+                                <th>Active</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @for (user of userList(); track $index) {
+                            <tr>
+                                <td>{{$index+1}}</td>
+                                <td>{{user.fullName}}</td>
+                                <td>{{user.email}}</td>
+                                <td>{{user.mobileNo}}</td>
+                                <td>{{user.roleName}}</td>
+                                <td>{{user.isActive ?'Active':'De-Active'}}</td>
+                                <td>
+                                    <button class="btn btn-sm btn-warning mx-2" (click)="onEdit(user)">Edit</button>
+                                    <button class="btn btn-sm btn-danger"
+                                        (click)="onDeleteUser(user.id)">Delete</button>
+                                </td>
+                            </tr>
+                            }
+                            @empty {
+                            <tr>
+                                <td colspan="7" class="text-center">
+                                    No users found
+                                </td>
+                            </tr>
+                            }
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+
+
+        <!-- User Form -->
+        @if (isUserFormVisible) {
+        <div class="col-4">
+            <div class="card border-primary">
+                <div class="card-header bg-primary d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">User Details</h5>
+
+                    <div>
+                        <button (click)="openCloseUserForm(false)" type="button" class="btn btn-secondary">
+                            Close
+                        </button>
+                    </div>
+                </div>
+
+                <div class="card-body">
+
+                    <form [formGroup]="userForm">
+                        <div class="row">
+                            <!-- Full Name -->
+                            <div class="col-md-6 mb-3">
+                                <label for="fullName" class="form-label">
+                                    Full Name
+                                </label>
+                                <input type="text" id="fullName" class="form-control" formControlName="fullName"
+                                    placeholder="Enter full name">
+                            </div>
+
+                            <!-- Email -->
+                            <div class="col-md-6 mb-3">
+                                <label for="email" class="form-label">
+                                    Email
+                                </label>
+                                <input type="email" id="email" class="form-control" formControlName="email"
+                                    placeholder="Enter email">
+                            </div>
+
+                            <!-- Mobile No -->
+                            <div class="col-md-6 mb-3">
+                                <label for="mobileNo" class="form-label">
+                                    Mobile No.
+                                </label>
+                                <input type="text" id="mobileNo" formControlName="mobileNo" class="form-control"
+                                    placeholder="Enter mobile number">
+                            </div>
+
+                            <!-- Password -->
+                            <div class="col-md-6 mb-3">
+                                <label for="password" class="form-label">
+                                    Password
+                                </label>
+                                <input type="password" id="password" class="form-control" formControlName="password"
+                                    placeholder="Enter password">
+                            </div>
+
+                            <!-- Role Name -->
+                            <div class="col-md-6 mb-3">
+                                <label for="roleName" class="form-label">
+                                    Role
+                                </label>
+                                <select id="roleName" class="form-select" formControlName="roleName">
+                                    <option value="" disabled>Select Role</option>
+                                    <option>Admin</option>
+                                    <option>Doctor</option>
+                                    <option>Staff</option>
+                                </select>
+                            </div>
+
+                            <!-- Is Active -->
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label d-block">
+                                    Status
+                                </label>
+
+                                <div class="form-check form-switch mt-2">
+                                    <input class="form-check-input" type="checkbox" formControlName="isActive"
+                                        id="isActive">
+                                    <label class="form-check-label" for="isActive">
+                                        Active
+                                    </label>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- Form Buttons -->
+                        <div class="d-flex justify-content-end gap-2">
+                            <button type="button" (click)="onResetUser()" class="btn btn-secondary">
+                                Reset
+                            </button>
+                            @if(isNewUser){
+                            <button type="submit" (click)="onSaveUser()" class="btn btn-success">
+                                Save User
+                            </button>
+                            }
+                            @else {
+                            <button type="submit" (click)="onUpdateUser()" class="btn btn-warning">
+                                Update User
+                            </button>
+                            }
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+        </div>
+        }
+
+    </div>
+</div>
