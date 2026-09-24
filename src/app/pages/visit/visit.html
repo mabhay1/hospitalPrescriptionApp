@@ -1,0 +1,158 @@
+<main class="container-fluid py-3">
+    <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-2 mb-3">
+        <div>
+            <p class="text-primary text-uppercase fw-bold small mb-1">Clinical records</p>
+            <h1 class="h4 fw-bold mb-0">Patient visits</h1>
+        </div>
+        <button (click)="openCloseVisitForm(true)" class="btn btn-primary btn-sm d-inline-flex align-items-center gap-2 visit-form-toggle" type="button">
+            <span class="fs-5 lh-1">+</span>
+            <span>New visit</span>
+        </button>
+    </div>
+
+    <div class="row g-3 align-items-start">
+        <div [class]="isFormVisible?'col-8':'col-12'">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white border-bottom py-2">
+                    <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-2">
+                        <div>
+                            <h2 class="h6 mb-0">Visit records</h2><small class="text-secondary">Patient and doctor
+                                consultations</small>
+                        </div>
+                        <div class="input-group input-group-sm" style="max-width: 230px;">
+                            <span class="input-group-text bg-light">&#128269;</span>
+                            <input class="form-control" type="search" placeholder="Search visits"
+                                aria-label="Search visits" />
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th class="ps-3">Patient Name</th>
+                                    <th>Doctor Name</th>
+                                    <th>Visit Date</th>
+                                    <th>Status</th>
+                                    <th>Symptoms</th>
+                                    <th>Diagnosis</th>
+                                    <th class="text-end pe-3">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @for (item of visitList(); track $index) {
+                                <tr>
+                                    <td class="ps-3">
+                                        {{item.patientName}}
+                                        <small class="d-block text-secondary">{{item.patientPhone}}</small>
+                                    </td>
+                                    <td>{{item.doctorName}}</td>
+                                    <td>
+                                        {{item.visitDate|date:'dd MMM yyyy'}}
+                                        <small class="d-block text-secondary">{{item.visitDate|date:'hh:mm a'}}</small>
+                                    </td>
+                                    <td>
+                                        <span class="badge rounded-pill text-bg-primary" [ngClass]="{
+                                                                                'text-bg-primary':item.visitStatus===visitStatus.CURRENT,
+                                                                                'text-bg-warning':item.visitStatus===visitStatus.FOLLOWUP,
+                                                                                'text-bg-danger':item.visitStatus===visitStatus.CLOSED,
+                                                                            }">{{item.visitStatus}}</span>
+                                    </td>
+                                    <td>{{item.symptoms|slice:0:10}}</td>
+                                    <td>{{item.diagnosis|slice:0:10}}</td>
+                                    <td class="text-end pe-3">
+                                        <button class="btn btn-sm btn-outline-success me-1" type="button" [routerLink]="'/open-visit/'+item.patientId">Open</button>
+                                        <button class="btn btn-sm btn-outline-primary me-1" type="button" (click)="onEdit(item)">Edit</button>
+                                        <button class="btn btn-sm btn-outline-danger" type="button" (click)="onDelete(item.visitId)">Delete</button>
+                                    </td>
+                                </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="card-footer bg-white border-top d-flex align-items-center justify-content-between">
+                    <small class="text-secondary">Showing 3 of 248 visits</small>
+                    <nav aria-label="Visit list pagination">
+                        <ul class="pagination pagination-sm mb-0">
+                            <li class="page-item disabled"><a class="page-link" href="#previous">Previous</a></li>
+                            <li class="page-item active"><a class="page-link" href="#page-1">1</a></li>
+                            <li class="page-item"><a class="page-link" href="#page-2">2</a></li>
+                            <li class="page-item"><a class="page-link" href="#next">Next</a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+        @if (isFormVisible) {
+        <div class="col-4">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white border-bottom d-flex align-items-center justify-content-between py-2">
+                    <div>
+                        <h2 class="h6 mb-0">Create visit</h2><small class="text-secondary">Add consultation
+                            details</small>
+                    </div>
+                    <button class="btn btn-sm btn-primary" (click)="openCloseVisitForm(false)">Close</button>
+                </div>
+                <div class="card-body py-3">
+                    <form class="row g-2">
+                        <div class="col-md-6 col-xl-12">
+                            <label class="form-label fw-semibold" for="patientId">Patient <span
+                                    class="text-danger">*</span></label>
+                            <select class="form-select" id="patientId" [(ngModel)]="visitForm.patientId" name="patientId">
+                                <option selected disabled value="">Select patient</option>
+                                @for (item of patientListObs$|async; track $index) {
+                                <option [value]="item.patientId">{{item.fullName}} - {{item.phone}}</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-md-6 col-xl-12">
+                            <label class="form-label fw-semibold" for="doctorId">Doctor <span
+                                    class="text-danger">*</span></label>
+                            <select class="form-select" id="doctorId" [(ngModel)]="visitForm.doctorId" name="doctorId">
+                                <option selected disabled value="">Select doctor</option>
+                                @for (item of doctorListObs$|async; track $index) {
+                                <option [value]="item.id">{{item.fullName}}</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-md-7">
+                            <label class="form-label fw-semibold" for="visitDate">Visit date <span
+                                    class="text-danger">*</span></label>
+                            <input [(ngModel)]="visitForm.visitDate" class="form-control" id="visitDate" name="visitDate" type="datetime-local" />
+                        </div>
+                        <div class="col-md-5">
+                            <label class="form-label fw-semibold" for="visitStatus">Status</label>
+                            <select class="form-select" id="visitStatus" [(ngModel)]="visitForm.visitStatus" name="visitStatus">
+                                @for (item of visitStatusList; track $index) {
+                                <option>{{item}}</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-md-6 col-xl-12">
+                            <label class="form-label fw-semibold" for="symptoms">Symptoms</label>
+                            <textarea [(ngModel)]="visitForm.symptoms" class="form-control" id="symptoms" name="symptoms" rows="3"
+                                placeholder="Describe the patient's symptoms"></textarea>
+                        </div>
+                        <div class="col-md-6 col-xl-12">
+                            <label class="form-label fw-semibold" for="diagnosis">Diagnosis</label>
+                            <textarea [(ngModel)]="visitForm.diagnosis" class="form-control" id="diagnosis" name="diagnosis" rows="3"
+                                placeholder="Add diagnosis or clinical notes"></textarea>
+                        </div>
+                        <div class="col-12 d-flex gap-2 pt-2">
+                            @if (visitId===0) {
+                            <button class="btn btn-primary flex-grow-1" (click)="onSaveVisit()" type="button">Save visit</button>
+                            }
+                            @else {
+                            <button class="btn btn-warning flex-grow-1" (click)="onUpdateVisit()" type="button">Update visit</button>
+                            }
+                            <button class="btn btn-light border" (click)="onResetVisitForm()" type="button">Reset</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        }
+    </div>
+</main>

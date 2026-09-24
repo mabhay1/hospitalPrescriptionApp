@@ -1,0 +1,348 @@
+<main class="container-fluid py-2 py-lg-3 open-visit-theme">
+    <div class="d-flex align-items-center justify-content-between gap-2 mb-2">
+        <div>
+            <p class="doctor-workspace-label text-uppercase fw-bold small mb-1">Doctor workspace</p>
+            <h1 class="h5 fw-bold mb-0">Open patient <small class="text-secondary fw-normal">#1</small></h1>
+        </div>
+        <a class="btn btn-outline-secondary btn-sm" href="#back-to-visits">Back</a>
+    </div>
+
+    <section class="card patient-summary-card shadow-sm mb-3">
+        <div class="card-header theme-header d-flex align-items-center justify-content-between py-2">
+            <h2 class="h5 mb-0">Patient information</h2>
+        </div>
+        <div class="card-body py-3">
+            <div class="row g-3 align-items-center small">
+                <div class="col-auto">
+                    <div class="patient-avatar rounded-circle d-flex align-items-center justify-content-center fw-bold">
+                        {{currentPatientDetail().fullName|getInitials}}</div>
+                </div>
+                <div class="col-12 col-md-3"><span class="text-secondary d-block">Patient name</span><strong
+                        class="fs-6">{{currentPatientDetail().fullName}}</strong></div>
+                <div class="col-6 col-md-2"><span
+                        class="text-secondary d-block">Gender</span><strong>{{currentPatientDetail().gender}}</strong>
+                </div>
+                <div class="col-6 col-md-2"><span class="text-secondary d-block">Date of
+                        birth</span><strong>{{currentPatientDetail().dateOfBirth|date:'dd MMM yyyy'}}</strong></div>
+                <div class="col-6 col-md-2"><span
+                        class="text-secondary d-block">Phone</span><strong>{{currentPatientDetail().phone}}</strong>
+                </div>
+                <div class="col-12 col-md-3"><span
+                        class="text-secondary d-block">Address</span><strong>{{currentPatientDetail().address}}</strong><small
+                        class="d-block text-secondary">{{currentPatientDetail().createdDate|date:'dd MMM yyyy'}}</small>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="row g-3 align-items-start">
+        <div class="col-12 col-lg-3">
+            <section class="card visit-history-card shadow-sm">
+                <div class="card-header theme-header d-flex align-items-center justify-content-between py-2">
+                    <h2 class="h5 mb-0">Visit history</h2><span class="badge visits-count-badge">{{currentPatientVisits().length}} Visits</span>
+                </div>
+                <div class="list-group list-group-flush" role="tablist">
+                    @for (item of currentPatientVisits(); track $index) {
+                    <button class="list-group-item list-group-item-action p-3 text-start" [ngClass]="selectedVisit?.visitId===item.visitId?'active':''"
+                          type="button" (click)="openSelectedVisit(item)">
+                        <div class="d-flex justify-content-between gap-2">
+                            <strong>{{item.visitDate|date:'dd MMM yyyy'}}</strong>
+                            <span>{{item.visitStatus}}</span>
+                        </div>
+                        <div class="mt-2">{{item.symptoms}}</div>
+                        <small class="d-block mt-1">Diagnosis: {{item.diagnosis}}</small>
+                    </button>
+                    }
+                </div>
+            </section>
+        </div>
+
+        <div class="col-12 col-lg-9">
+            <div class="tab-content">
+                <div class="tab-pane fade show active" id="visit-101" role="tabpanel" aria-labelledby="visit-tab-101"
+                    tabindex="0">
+                    <div class="card border-primary shadow-sm mb-3">
+                        <div
+                            class="card-header bg-primary text-dark d-flex align-items-center justify-content-between py-2">
+                            <h2 class="h5 mb-0">Selected visit details</h2><span
+                                class="badge text-bg-light">Current</span>
+                        </div>
+                        <div class="card-body py-3">
+                            <div class="row g-3 small">
+                                <div class="col-6 col-md-3"><span class="text-secondary d-block">Visit
+                                        ID</span><strong>101</strong></div>
+                                <div class="col-6 col-md-3"><span class="text-secondary d-block">Patient
+                                        ID</span><strong>1</strong></div>
+                                <div class="col-6 col-md-3"><span class="text-secondary d-block">Visit
+                                        date</span><strong>24 Sep 2026, 10:30 AM</strong></div>
+                                <div class="col-6 col-md-3"><span
+                                        class="text-secondary d-block">Doctor</span><strong>Dr. Kavita Rao</strong>
+                                </div>
+                                <div class="col-12 col-md-6"><span
+                                        class="text-secondary d-block">Symptoms</span><strong>Fever and body ache for
+                                        two days.</strong></div>
+                                <div class="col-12 col-md-6"><span
+                                        class="text-secondary d-block">Diagnosis</span><strong>Seasonal viral
+                                        infection.</strong></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row g-3">
+                        <div class="col-12 col-xl-7">
+                            <div class="card border-primary shadow-sm h-100">
+                                <div class="card-header bg-primary text-dark d-flex justify-content-between py-2">
+                                    <h2 class="h5 mb-0">Prescriptions for this visit</h2><span
+                                        class="badge text-bg-dark">2 Medicines</span>
+                                </div>
+                                <div class="table-responsive">
+                                    <table class="table table-sm align-middle mb-0">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th class="ps-3">Sr No</th>
+                                                <th>Medicine</th>
+                                                <th>Dosage</th>
+                                                <th>Frequency</th>
+                                                <th>Duration</th>
+                                                <th>Instruction</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td class="ps-3">1</td>
+                                                <td><strong>Paracetamol</strong><small
+                                                        class="d-block text-secondary">500 mg · Tablet</small></td>
+                                                <td>1 Tablet</td>
+                                                <td>Twice daily</td>
+                                                <td>3 Days</td>
+                                                <td>After food</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="ps-3">2</td>
+                                                <td><strong>Azithromycin</strong><small
+                                                        class="d-block text-secondary">250 mg · Tablet</small></td>
+                                                <td>1 Tablet</td>
+                                                <td>Once daily</td>
+                                                <td>3 Days</td>
+                                                <td>With water</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-xl-5">
+                            <div class="card border-primary shadow-sm h-100">
+                                <div class="card-header bg-primary text-dark py-2">
+                                    <h2 class="h5 mb-0">Add prescription</h2><small>For visit ID: 101</small>
+                                </div>
+                                <div class="card-body">
+                                    <form class="row g-2">
+                                        <div class="col-12"><label class="form-label small fw-semibold"
+                                                for="medicine101">Medicine name</label><select
+                                                class="form-select form-select-sm" id="medicine101">
+                                                <option selected disabled>Select medicine</option>
+                                                <option>Paracetamol</option>
+                                                <option>Azithromycin</option>
+                                                <option>Amoxicillin</option>
+                                            </select></div>
+                                        <div class="col-6"><label class="form-label small fw-semibold"
+                                                for="dosage101">Dosage</label><input
+                                                class="form-control form-control-sm" id="dosage101"
+                                                placeholder="1 Tablet" /></div>
+                                        <div class="col-6"><label class="form-label small fw-semibold"
+                                                for="frequency101">Frequency</label><select
+                                                class="form-select form-select-sm" id="frequency101">
+                                                <option>Once daily</option>
+                                                <option>Twice daily</option>
+                                                <option>As needed</option>
+                                            </select></div>
+                                        <div class="col-6"><label class="form-label small fw-semibold"
+                                                for="duration101">Duration</label><input
+                                                class="form-control form-control-sm" id="duration101"
+                                                placeholder="3 Days" /></div>
+                                        <div class="col-6"><label class="form-label small fw-semibold"
+                                                for="instructions101">Instruction</label><input
+                                                class="form-control form-control-sm" id="instructions101"
+                                                placeholder="After food" /></div>
+                                        <div class="col-12 d-flex justify-content-end gap-2 pt-2"><button
+                                                class="btn btn-secondary btn-sm" type="reset">Reset</button><button
+                                                class="btn btn-warning btn-sm" type="submit">Add Prescription</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade" id="visit-98" role="tabpanel" aria-labelledby="visit-tab-98" tabindex="0">
+                    <div class="card border-primary shadow-sm">
+                        <div class="card-header bg-primary text-dark d-flex justify-content-between py-2">
+                            <h2 class="h5 mb-0">Selected visit details</h2><span
+                                class="badge text-bg-warning">FollowUp</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="row g-3 small mb-3">
+                                <div class="col-md-3"><span class="text-secondary d-block">Visit
+                                        ID</span><strong>98</strong></div>
+                                <div class="col-md-3"><span class="text-secondary d-block">Patient
+                                        ID</span><strong>1</strong></div>
+                                <div class="col-md-3"><span class="text-secondary d-block">Visit date</span><strong>14
+                                        Aug 2026, 09:15 AM</strong></div>
+                                <div class="col-md-3"><span class="text-secondary d-block">Doctor</span><strong>Dr.
+                                        Arjun Singh</strong></div>
+                                <div class="col-md-6"><span class="text-secondary d-block">Symptoms</span><strong>Chest
+                                        discomfort.</strong></div>
+                                <div class="col-md-6"><span
+                                        class="text-secondary d-block">Diagnosis</span><strong>Routine cardiac
+                                        review.</strong></div>
+                            </div>
+                            <div class="row g-3">
+                                <div class="col-xl-7">
+                                    <div class="border rounded">
+                                        <div class="p-2 border-bottom"><strong class="small">Prescription items</strong>
+                                        </div>
+                                        <div class="table-responsive">
+                                            <table class="table table-sm mb-0 small">
+                                                <thead class="table-light">
+                                                    <tr>
+                                                        <th>Medicine</th>
+                                                        <th>Dosage</th>
+                                                        <th>Frequency</th>
+                                                        <th>Duration</th>
+                                                        <th>Instruction</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>Atorvastatin<br><small class="text-secondary">10 mg ·
+                                                                Tablet</small></td>
+                                                        <td>1 Tablet</td>
+                                                        <td>Once daily</td>
+                                                        <td>30 Days</td>
+                                                        <td>At night</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-5">
+                                    <div class="border rounded p-3">
+                                        <h3 class="h6 mb-2">Add prescription</h3>
+                                        <form class="row g-2">
+                                            <div class="col-12"><select class="form-select form-select-sm"
+                                                    aria-label="Medicine for visit 98">
+                                                    <option selected disabled>Select medicine</option>
+                                                    <option>Atorvastatin</option>
+                                                    <option>Paracetamol</option>
+                                                </select></div>
+                                            <div class="col-6"><input class="form-control form-control-sm"
+                                                    placeholder="Dosage" aria-label="Dosage for visit 98" /></div>
+                                            <div class="col-6"><select class="form-select form-select-sm"
+                                                    aria-label="Frequency for visit 98">
+                                                    <option>Once daily</option>
+                                                    <option>Twice daily</option>
+                                                </select></div>
+                                            <div class="col-6"><input class="form-control form-control-sm"
+                                                    placeholder="Duration" aria-label="Duration for visit 98" /></div>
+                                            <div class="col-6"><input class="form-control form-control-sm"
+                                                    placeholder="Instruction" aria-label="Instruction for visit 98" />
+                                            </div>
+                                            <div class="col-12"><button class="btn btn-warning btn-sm w-100"
+                                                    type="submit">Add Prescription</button></div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade" id="visit-86" role="tabpanel" aria-labelledby="visit-tab-86" tabindex="0">
+                    <div class="card border-primary shadow-sm">
+                        <div class="card-header bg-primary text-dark d-flex justify-content-between py-2">
+                            <h2 class="h5 mb-0">Selected visit details</h2><span
+                                class="badge text-bg-secondary">Closed</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="row g-3 small mb-3">
+                                <div class="col-md-3"><span class="text-secondary d-block">Visit
+                                        ID</span><strong>86</strong></div>
+                                <div class="col-md-3"><span class="text-secondary d-block">Patient
+                                        ID</span><strong>1</strong></div>
+                                <div class="col-md-3"><span class="text-secondary d-block">Visit date</span><strong>08
+                                        Jun 2026, 11:00 AM</strong></div>
+                                <div class="col-md-3"><span class="text-secondary d-block">Doctor</span><strong>Dr.
+                                        Kavita Rao</strong></div>
+                                <div class="col-md-6"><span
+                                        class="text-secondary d-block">Symptoms</span><strong>Headache.</strong></div>
+                                <div class="col-md-6"><span
+                                        class="text-secondary d-block">Diagnosis</span><strong>Primary
+                                        headache.</strong></div>
+                            </div>
+                            <div class="row g-3">
+                                <div class="col-xl-7">
+                                    <div class="border rounded">
+                                        <div class="p-2 border-bottom"><strong class="small">Prescription items</strong>
+                                        </div>
+                                        <div class="table-responsive">
+                                            <table class="table table-sm mb-0 small">
+                                                <thead class="table-light">
+                                                    <tr>
+                                                        <th>Medicine</th>
+                                                        <th>Dosage</th>
+                                                        <th>Frequency</th>
+                                                        <th>Duration</th>
+                                                        <th>Instruction</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>Ibuprofen<br><small class="text-secondary">400 mg ·
+                                                                Tablet</small></td>
+                                                        <td>1 Tablet</td>
+                                                        <td>As needed</td>
+                                                        <td>5 Days</td>
+                                                        <td>After food</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-5">
+                                    <div class="border rounded p-3">
+                                        <h3 class="h6 mb-2">Add prescription</h3>
+                                        <form class="row g-2">
+                                            <div class="col-12"><select class="form-select form-select-sm"
+                                                    aria-label="Medicine for visit 86">
+                                                    <option selected disabled>Select medicine</option>
+                                                    <option>Ibuprofen</option>
+                                                    <option>Paracetamol</option>
+                                                </select></div>
+                                            <div class="col-6"><input class="form-control form-control-sm"
+                                                    placeholder="Dosage" aria-label="Dosage for visit 86" /></div>
+                                            <div class="col-6"><select class="form-select form-select-sm"
+                                                    aria-label="Frequency for visit 86">
+                                                    <option>Once daily</option>
+                                                    <option>As needed</option>
+                                                </select></div>
+                                            <div class="col-6"><input class="form-control form-control-sm"
+                                                    placeholder="Duration" aria-label="Duration for visit 86" /></div>
+                                            <div class="col-6"><input class="form-control form-control-sm"
+                                                    placeholder="Instruction" aria-label="Instruction for visit 86" />
+                                            </div>
+                                            <div class="col-12"><button class="btn btn-warning btn-sm w-100"
+                                                    type="submit">Add Prescription</button></div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>

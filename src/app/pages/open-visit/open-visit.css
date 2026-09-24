@@ -1,0 +1,72 @@
+.open-visit-theme .doctor-workspace-label,
+.open-visit-theme .text-primary {
+	color: var(--medical-blue) !important;
+}
+
+.open-visit-theme .patient-summary-card,
+.open-visit-theme .visit-history-card,
+.open-visit-theme .border-primary {
+	border-color: var(--medical-blue) !important;
+}
+
+.open-visit-theme .theme-header,
+.open-visit-theme .card-header.bg-primary,
+.open-visit-theme .bg-primary {
+	color: var(--card-white) !important;
+	background-color: var(--medical-blue) !important;
+}
+
+.open-visit-theme .patient-id-badge {
+	color: var(--medical-blue);
+	background-color: var(--card-white);
+}
+
+.open-visit-theme .patient-avatar {
+	width: 50px;
+	height: 50px;
+	color: var(--card-white);
+	background-color: var(--teal);
+}
+
+.open-visit-theme .visits-count-badge,
+.open-visit-theme .text-bg-dark {
+	color: var(--card-white) !important;
+	background-color: var(--dark-navy) !important;
+}
+
+.open-visit-theme .selected-visit-tab {
+	border-color: var(--medical-blue) !important;
+	color: var(--card-white) !important;
+	background-color: var(--medical-blue) !important;
+}
+
+.open-visit-theme .text-bg-warning,
+.open-visit-theme .btn-warning {
+	border-color: var(--warning-amber) !important;
+	color: var(--dark-navy) !important;
+	background-color: var(--warning-amber) !important;
+}
+
+.open-visit-theme .text-bg-secondary {
+	color: var(--card-white) !important;
+	background-color: var(--slate-gray) !important;
+}
+
+.open-visit-theme .text-bg-success {
+	color: var(--card-white) !important;
+	background-color: var(--success-green) !important;
+}
+
+.open-visit-theme .bg-primary-subtle {
+	background-color: rgba(37, 99, 235, 0.12) !important;
+}
+
+.open-visit-theme .btn-primary {
+	border-color: var(--medical-blue);
+	background-color: var(--medical-blue);
+}
+
+.open-visit-theme .btn-primary:hover {
+	border-color: var(--deep-blue);
+	background-color: var(--deep-blue);
+}

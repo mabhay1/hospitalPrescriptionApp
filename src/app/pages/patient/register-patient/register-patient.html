@@ -1,5 +1,5 @@
-<main class="patient-registration-page">
-	<div class="container py-4 py-lg-5">
+<main>
+	<div [ngClass]="showBanner?'container py-4 py-lg-5':''">
 		<div class="registration-card overflow-hidden">
             @if(showBanner){
 			<section class="registration-banner">
@@ -51,10 +51,9 @@
 						<label class="form-label" for="gender">Gender <span aria-hidden="true">*</span></label>
 						<select formControlName="gender" class="form-select" id="gender" name="gender">
 							<option selected disabled value="">Select gender</option>
-							<option>Female</option>
-							<option>Male</option>
-							<option>Other</option>
-							<option>Prefer not to say</option>
+                            @for (item of genderList; track $index) {
+                                <option>{{item}}</option>
+                            }
 						</select>
 					</div>
 					<div class="col-md-6">
@@ -66,8 +65,13 @@
 						<textarea class="form-control" formControlName="address" id="address" name="address" rows="3" placeholder="Enter your complete address"></textarea>
 					</div>
 					<div class="col-12 d-flex flex-column flex-sm-row align-items-sm-center justify-content-between gap-3 pt-2">
-						<p class="privacy-note mb-0"><span aria-hidden="true">&#128274;</span> Your information is kept private and secure.</p>
-						<button (click)="onSaveForm()" class="btn btn-primary register-button" type="submit">Continue to appointment <span aria-hidden="true">&#8594;</span></button>
+                        <button (click)="onResetForm()" class="btn btn-secondary" type="button">Cancel</button>						
+                         @if(patientId===0){
+                            <button (click)="onSaveForm()" class="btn btn-primary register-button" type="button">Register</button>
+                         }
+                         @else {
+                            <button (click)="onUpdateForm()" class="btn btn-warning" type="button">Update</button>
+                         }
 					</div>
 				</form>
 			</section>

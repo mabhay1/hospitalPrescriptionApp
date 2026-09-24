@@ -5,12 +5,12 @@ export interface IPatientResponse{
     dateOfBirth: Date;
     phone: string;
     address: string;
-    createdDate: Date;
+    createdDate?: Date;
 }
 
 export interface IPatientModel{
-  fullName: "string",
-  gender: "string",
+  fullName: string,
+  gender: string,
   dateOfBirth: Date,
   phone: string,
   address: string

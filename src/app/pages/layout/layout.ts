@@ -3,9 +3,10 @@ import { Component, inject } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { IUserResponse } from '../../core/models/interfaces/User.model';
 import { UserService } from '../../core/services/user-service';
+import { GetInitialsPipe } from '../../shared/pipes/get-initials-pipe';
 
 @Component({
-  imports: [RouterOutlet,NgClass, RouterLink, RouterLinkActive],
+  imports: [RouterOutlet,NgClass, RouterLink, RouterLinkActive,GetInitialsPipe],
   selector: 'app-layout',
   styleUrl: './layout.css',
   templateUrl: './layout.html',

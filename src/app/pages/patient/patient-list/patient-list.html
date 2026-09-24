@@ -38,8 +38,8 @@
                                 <td>{{patient.dateOfBirth|date:'MMM dd, yyyy, hh:mm'}}</td>
                                 <td>{{patient.phone}}</td>
                                 <td>
-                                    <button class="btn btn-sm btn-warning mx-2">Edit</button>
-                                    <button class="btn btn-sm btn-danger">Delete</button>
+                                    <button class="btn btn-sm btn-warning mx-2" (click)="onEditPatient(patient.patientId)">Edit</button>
+                                    <button class="btn btn-sm btn-danger" (click)="onDeletePatient(patient.patientId)">Delete</button>
                                 </td>
                             </tr>
                             }
@@ -73,7 +73,7 @@
                 </div>
 
                 <div class="card-body">
-                    <app-register-patient [showBanner]="false"></app-register-patient>
+                    <app-register-patient [showBanner]="false" (patientRegistered)="onPatientRegister()"></app-register-patient>
 
                 </div>
             </div>

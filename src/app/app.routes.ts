@@ -5,6 +5,9 @@ import { Users } from './pages/users/users';
 import { MedicineMaster } from './pages/medicine-master/medicine-master';
 import { RegisterPatient } from './pages/patient/register-patient/register-patient';
 import { PatientList } from './pages/patient/patient-list/patient-list';
+import { Visit } from './pages/visit/visit';
+import { OpenVisit } from './pages/open-visit/open-visit';
+import { PageNotFound } from './pages/page-not-found/page-not-found';
 
 export const routes: Routes = [
     {
@@ -35,7 +38,19 @@ export const routes: Routes = [
             {
                 path:'patient-list',
                 component:PatientList
+            },
+            {
+                path:'visit',
+                component:Visit
+            },
+            {
+                path:'open-visit/:patientId',
+                component:OpenVisit
             }
         ]
+    },
+    {
+        path:'**',
+        component:PageNotFound
     }
 ];

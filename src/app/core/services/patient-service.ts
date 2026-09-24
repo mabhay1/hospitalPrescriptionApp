@@ -15,4 +15,13 @@ export class PatientService {
     registerPatient(patientObj:IPatientModel):Observable<IPatientResponse>{
         return this.http.post<IPatientResponse>(environment.API_URL+GlobalConstant.API_METHODS.GET_ALL_PATIENTS,patientObj)
     }
+    getPatientById(id:number):Observable<IPatientResponse>{
+        return this.http.get<IPatientResponse>(environment.API_URL+GlobalConstant.API_METHODS.GET_PATIENT_BY_ID+id)
+    }
+    updatePatient(patientObj:IPatientModel,id:number):Observable<IPatientResponse>{
+        return this.http.put<IPatientResponse>(environment.API_URL+GlobalConstant.API_METHODS.GET_PATIENT_BY_ID+id,patientObj)
+    }
+    removePatient(id:number){
+        return this.http.delete(environment.API_URL+GlobalConstant.API_METHODS.GET_PATIENT_BY_ID+id)
+    }
 }
