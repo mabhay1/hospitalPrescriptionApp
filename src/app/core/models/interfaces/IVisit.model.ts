@@ -29,10 +29,24 @@ export interface IVisitListModel {
 export interface IPrescriptionItem {
   prescriptionItemId: number;
   visitId: number;
+  visitDate?: string,
+  visitStatus?: VisitStatusType,
+  patientId?: number,
+  patientName?: string,
+  doctorId?: number,
+  doctorName?: string,
   medicineId: number;
   medicineName: string;
   medicineStrength: string;
   medicineForm: string;
+  dosage: string;
+  frequency: string;
+  durationDays: number;
+  instructions: string;
+}
+export interface IPrescriptionModel{
+  visitId: number;
+  medicineId: number;
   dosage: string;
   frequency: string;
   durationDays: number;

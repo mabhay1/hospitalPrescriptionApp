@@ -3,8 +3,9 @@ import { inject, Service } from '@angular/core';
 import { environment } from '../../../environments/environment.development';
 import { GlobalConstant } from '../constant/GlobalConstant';
 import { Observable } from 'rxjs';
-import { IVisitListModel } from '../models/interfaces/IVisit.model';
+import { IPrescriptionItem, IPrescriptionModel, IVisitListModel } from '../models/interfaces/IVisit.model';
 import { VisitModel } from '../models/classes/Visit.model';
+import { VisitStatusType } from '../models/types/Visit.type';
 
 @Service()
 export class VisitService {
@@ -24,5 +25,8 @@ export class VisitService {
     }
     getVisitsByPatientId(patientId:number):Observable<IVisitListModel[]>{
         return this.http.get<IVisitListModel[]>(environment.API_URL+GlobalConstant.API_METHODS.GET_VISITS_BY_PATIENT_ID+patientId)
+    }
+    addPrescriptionItem(prescriptionObj:IPrescriptionModel):Observable<IPrescriptionItem>{
+        return this.http.post<IPrescriptionItem>(environment.API_URL+GlobalConstant.API_METHODS.ADD_PRESCRIPTION_ITEM,prescriptionObj)
     }
 }
