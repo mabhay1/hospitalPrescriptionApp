@@ -9,7 +9,7 @@
                     <h5 class="mb-0">User List</h5>
 
                     <div>
-                        <button (click)="openClosePatientForm(true)" type="button" class="btn btn-secondary">
+                        <button appHideForDoctor (click)="openClosePatientForm(true)" type="button" class="btn btn-secondary">
                             Add User
                         </button>
                     </div>
@@ -38,8 +38,8 @@
                                 <td>{{patient.dateOfBirth|date:'MMM dd, yyyy, hh:mm'}}</td>
                                 <td>{{patient.phone}}</td>
                                 <td>
-                                    <button class="btn btn-sm btn-warning mx-2" (click)="onEditPatient(patient.patientId)">Edit</button>
-                                    <button class="btn btn-sm btn-danger" (click)="onDeletePatient(patient.patientId)">Delete</button>
+                                    <button appHideForDoctor class="btn btn-sm btn-warning mx-2" (click)="onEditPatient(patient.patientId)">Edit</button>
+                                    <button appHideForDoctor class="btn btn-sm btn-danger" (click)="onDeletePatient(patient.patientId)">Delete</button>
                                 </td>
                             </tr>
                             }

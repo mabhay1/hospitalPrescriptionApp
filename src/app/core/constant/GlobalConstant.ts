@@ -13,6 +13,7 @@ export const GlobalConstant = {
         GET_ALL_VISITS:'visits',
         GET_VISITS_BY_PATIENT_ID:'visits/patient/',
         ADD_PRESCRIPTION_ITEM:'prescription-items',
+        GET_DASHBOARD:'dashboard'
     },
     LOGIN_USER_SESSION_KEY:'hospitalUser',
     LOGIN_TOKEN_SESSION_KEY:'hospitalUserToken',

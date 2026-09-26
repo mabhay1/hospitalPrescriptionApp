@@ -1,10 +1,11 @@
-import { Component, ElementRef, OnInit, signal, ViewChild, WritableSignal } from '@angular/core';
+import { Component, ElementRef, inject, OnInit, signal, ViewChild, WritableSignal } from '@angular/core';
 import { form, FormField, minLength, required, schema } from '@angular/forms/signals';
 import { IMedicineModel, IMedicineResponse } from '../../core/models/interfaces/medicine.model';
 import { MedicineMasterService } from '../../core/services/medicine-master-service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { GlobalConstant } from '../../core/constant/GlobalConstant';
 import { NgFor } from '@angular/common';
+import { UserService } from '../../core/services/user-service';
 
 @Component({
   imports: [FormField, NgFor],
@@ -29,8 +30,25 @@ export class MedicineMaster implements OnInit {
   })
   currentMedicineid:number=0
   medicineFormList=GlobalConstant.MEDICINE_FORM_LIST
-  constructor(private medicineSrv:MedicineMasterService){
-
+  userSrv=inject(UserService)
+  constructor(private medicineSrv: MedicineMasterService) {
+    this.userSrv.searchInput$.subscribe({
+      next: (res: string) => {
+        if (res !== '') {
+          this.medicineSrv.filterMedicine(res).subscribe({
+            next: (res: IMedicineResponse[]) => {
+              this.medicineList.set(res)
+            },
+            error: (err: HttpErrorResponse) => {
+              alert("API Error")
+            }
+          })
+        }
+        else {
+          this.getAllMedicines()
+        }
+      }
+    })
   }
 
   ngOnInit(): void {

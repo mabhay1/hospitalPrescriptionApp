@@ -1,0 +1,42 @@
+import { Role } from "../enum/Role.enum";
+
+export const MenuConstant = {
+    MENU_LIST:[
+        {
+            title:'Dashboard',
+            url:'dashboard',
+            icon:'fa-gauge-high',
+            allowedRoles:[Role.ADMIN,Role.DOCTOR,Role.RECEPTIONIST]
+        },
+        {
+            title:'Staff',
+            url:'users',
+            icon:'fa-user-group',
+            allowedRoles:[Role.ADMIN]
+        },
+        {
+            title:'Patients',
+            url:'patient-list',
+            icon:'fa-users',
+            allowedRoles:[Role.ADMIN,Role.DOCTOR,Role.RECEPTIONIST]
+        },
+        {
+            title:'Medicines',
+            url:'medicine',
+            icon:'fa-pills',
+            allowedRoles:[Role.ADMIN,Role.DOCTOR]
+        },
+        {
+            title:'Visits',
+            url:'visit',
+            icon:'fa-calendar-check',
+            allowedRoles:[Role.ADMIN,Role.DOCTOR,Role.RECEPTIONIST]
+        },
+        {
+            title:'Prescriptions',
+            url:'open-visit/0',
+            icon:'fa-file-prescription',
+            allowedRoles:[Role.ADMIN,Role.DOCTOR]
+        },
+    ]
+}

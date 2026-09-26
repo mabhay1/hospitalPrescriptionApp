@@ -54,20 +54,21 @@
 								<label class="form-label" for="password">Password</label>
 								<a href="#forgot-password">Forgot password?</a>
 							</div>
-							<input
-								class="form-control form-control-lg"
-								id="password"
-								name="password"
-                                [(ngModel)]="loginObj.password"
-								type="password"
-								placeholder="Enter your password"
-								autocomplete="current-password"
-							/>
-						</div>
-
-						<div class="form-check remember-row">
-							<input class="form-check-input" type="checkbox" id="remember" />
-							<label class="form-check-label" for="remember">Remember me</label>
+							<div class="position-relative">
+								<input
+									class="form-control form-control-lg"
+									id="password"
+									name="password"
+									[(ngModel)]="loginObj.password"
+									[type]="showHidePassword?'text':'password'"
+									placeholder="Enter your password"
+									autocomplete="current-password"
+								/>
+								<button type="button" class="btn position-absolute top-50 end-0 translate-middle-y me-2 p-1 border-0"
+									aria-label="Show password" (click)="togglePassword()">
+									<i class="fa fa-eye"></i>
+								</button>
+							</div>
 						</div>
 
 						<button class="btn btn-primary btn-lg w-100 login-button" (click)="login()" type="submit">

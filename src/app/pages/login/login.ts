@@ -17,6 +17,7 @@ export class Login {
 
   userSrv = inject(UserService)
   router = inject(Router)
+  showHidePassword:boolean=false
 
   login(){
     this.userSrv.onLogin(this.loginObj).subscribe({
@@ -24,11 +25,14 @@ export class Login {
         sessionStorage.setItem(GlobalConstant.LOGIN_USER_SESSION_KEY,JSON.stringify(res.user))
         sessionStorage.setItem(GlobalConstant.LOGIN_TOKEN_SESSION_KEY,res.token)
         this.userSrv.addLoginData()
-        this.router.navigateByUrl("/users")
+        this.router.navigateByUrl("/dashboard")
 
       }, error:(err:any)=>{
         alert("API Error "+err.error)
       }
     })
+  }
+  togglePassword(){
+    this.showHidePassword=!this.showHidePassword
   }
 }

@@ -11,7 +11,7 @@
             }
         </select>
     </div>
-    @if(currentPatientId == 0) {
+    @if(currentPatientId === 0) {
     <section class="card shadow-sm border-0">
         <div class="card-body text-center py-4">
             <h5 class="text-secondary mb-2">No Patient Selected</h5>
@@ -23,7 +23,7 @@
         </div>
     </section>
     }
-    @if(currentPatientId!=0){
+    @if(currentPatientId!==0){
     <section class="card patient-summary-card shadow-sm mb-3">
         <div class="card-header theme-header d-flex align-items-center justify-content-between py-2">
             <h2 class="h5 mb-0">Patient information</h2>

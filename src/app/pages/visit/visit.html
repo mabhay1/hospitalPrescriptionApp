@@ -4,7 +4,7 @@
             <p class="text-primary text-uppercase fw-bold small mb-1">Clinical records</p>
             <h1 class="h4 fw-bold mb-0">Patient visits</h1>
         </div>
-        <button (click)="openCloseVisitForm(true)" class="btn btn-primary btn-sm d-inline-flex align-items-center gap-2 visit-form-toggle" type="button">
+        <button appHideForDoctor (click)="openCloseVisitForm(true)" class="btn btn-primary btn-sm align-items-center gap-2 visit-form-toggle" type="button">
             <span class="fs-5 lh-1">+</span>
             <span>New visit</span>
         </button>
@@ -63,8 +63,8 @@
                                     <td>{{item.diagnosis|slice:0:10}}</td>
                                     <td class="text-end pe-3">
                                         <button class="btn btn-sm btn-outline-success me-1" type="button" [routerLink]="'/open-visit/'+item.patientId">Open</button>
-                                        <button class="btn btn-sm btn-outline-primary me-1" type="button" (click)="onEdit(item)">Edit</button>
-                                        <button class="btn btn-sm btn-outline-danger" type="button" (click)="onDelete(item.visitId)">Delete</button>
+                                        <button appHideForDoctor class="btn btn-sm btn-outline-primary me-1" type="button" (click)="onEdit(item)">Edit</button>
+                                        <button appHideForDoctor class="btn btn-sm btn-outline-danger" type="button" (click)="onDelete(item.visitId)">Delete</button>
                                     </td>
                                 </tr>
                                 }

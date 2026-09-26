@@ -2,7 +2,7 @@ import { Component, inject, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { VisitService } from '../../core/services/visit-service';
 import { PatientService } from '../../core/services/patient-service';
-import { IPatientModel, IPatientResponse } from '../../core/models/interfaces/patient.model';
+import { IPatientResponse } from '../../core/models/interfaces/patient.model';
 import { HttpErrorResponse } from '@angular/common/http';
 import { GetInitialsPipe } from '../../shared/pipes/get-initials-pipe';
 import { AsyncPipe, DatePipe, NgClass } from '@angular/common';
@@ -46,10 +46,46 @@ export class OpenVisit implements OnInit {
   constructor(private activatedRoute:ActivatedRoute,private router:Router){
     this.activatedRoute.params.subscribe({
       next:(res:any)=>{
-        this.currentPatientId =res.patientId
-        if(this.currentPatientId!=0){
+        this.currentPatientId =Number(res.patientId)
+        if(this.currentPatientId!==0){
           this.getCurrentPatientById()
           this.getCurrentPatientVisits()
+        }
+        else{
+          this.currentPatientDetail.set({
+            patientId: 0,
+            fullName: '',
+            gender: '',
+            dateOfBirth: new Date(),
+            phone: '',
+            address: ''
+          })
+          this.currentPatientVisits.set([])
+          this.selectedVisit={
+              visitId: 0,
+              patientId: 0,
+              patientName: '',
+              patientPhone: '',
+              patientGender: '',
+              patientDateOfBirth: '',
+              patientAddress: '',
+              patientCreatedDate: '',
+              doctorId: 0,
+              doctorName: '',
+              doctorEmail: '',
+              doctorMobileNo: '',
+              doctorPassword: '',
+              doctorRoleId: 0,
+              doctorRoleName: '',
+              doctorProjectName: '',
+              doctorIsActive: false,
+              doctorCreatedOn: '',
+              visitDate: '',
+              symptoms: '',
+              diagnosis: '',
+              visitStatus: this.visitStatus.CURRENT,
+              prescriptionItems:[]
+          }
         }
       }
     })
@@ -111,15 +147,12 @@ export class OpenVisit implements OnInit {
     visitObj.symptoms= this.selectedVisit?.symptoms,
     visitObj.diagnosis= this.selectedVisit?.diagnosis;
     visitObj.visitStatus= event.target.value;
-    debugger
     this.visitSrv.updateVisit(visitObj,this.selectedVisit?.visitId).subscribe({
       next:(res:IVisitListModel)=>{
-        debugger
         alert("Status updated")
         this.getCurrentPatientVisits()
       },
       error:(err:HttpErrorResponse)=>{
-        debugger
       }
     })
   }

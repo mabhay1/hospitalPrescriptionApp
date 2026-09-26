@@ -4,9 +4,10 @@ import { RegisterPatient } from '../register-patient/register-patient';
 import { IPatientResponse } from '../../../core/models/interfaces/patient.model';
 import { PatientService } from '../../../core/services/patient-service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { HideForDoctor } from '../../../shared/directives/hide-for-doctor';
 
 @Component({
-  imports: [NgClass,RegisterPatient,DatePipe],
+  imports: [NgClass,RegisterPatient,DatePipe,HideForDoctor],
   selector: 'app-patient-list',
   styleUrl: './patient-list.css',
   templateUrl: './patient-list.html',

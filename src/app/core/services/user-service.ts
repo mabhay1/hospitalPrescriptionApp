@@ -4,12 +4,13 @@ import { environment } from '../../../environments/environment.development';
 import { GlobalConstant } from '../constant/GlobalConstant';
 import { LoginModel } from '../models/classes/User.model';
 import { ILoginResponse, IUserModel, IUserResponse } from '../models/interfaces/User.model';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 
 @Service()
 export class UserService {
     http = inject(HttpClient);
     loggedUserData!:IUserResponse
+    searchInput$:Subject<string>=new Subject<string>()
     constructor(){
         this.addLoginData()
     }

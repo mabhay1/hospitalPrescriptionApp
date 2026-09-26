@@ -13,9 +13,10 @@ import { VisitModel } from '../../core/models/classes/Visit.model';
 import { FormsModule } from '@angular/forms';
 import { GlobalConstant } from '../../core/constant/GlobalConstant';
 import { RouterLink } from '@angular/router';
+import { HideForDoctor } from '../../shared/directives/hide-for-doctor';
 
 @Component({
-  imports: [DatePipe,NgClass,SlicePipe,AsyncPipe,FormsModule,RouterLink],
+  imports: [DatePipe,NgClass,SlicePipe,AsyncPipe,FormsModule,RouterLink,HideForDoctor],
   selector: 'app-visit',
   styleUrl: './visit.css',
   templateUrl: './visit.html',
