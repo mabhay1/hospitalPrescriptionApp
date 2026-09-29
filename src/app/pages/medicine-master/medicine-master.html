@@ -108,9 +108,9 @@
                             [formField]="medicineForm.name">
 
                         @if (medicineForm.name().touched()||medicineForm.name().dirty()) {
-                        @for (item of medicineForm.name().errors(); track $index) {
-                        <div class="text-danger">{{item.message}}</div>
-                        }
+                            @for (item of medicineForm.name().errors(); track $index) {
+                                <div class="text-danger">{{item.message}}</div>
+                            }
                         }
                     </div>
 

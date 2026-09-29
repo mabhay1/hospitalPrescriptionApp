@@ -1,11 +1,11 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { IVisitListModel } from '../../core/models/interfaces/IVisit.model';
 import { VisitService } from '../../core/services/visit-service';
 import { AsyncPipe, DatePipe, NgClass, SlicePipe } from '@angular/common';
 import { Role, VisitStatus } from '../../core/enum/Role.enum';
 import { PatientService } from '../../core/services/patient-service';
 import { UserService } from '../../core/services/user-service';
-import { Observable } from 'rxjs';
+import { Observable, Subject, takeUntil } from 'rxjs';
 import { IPatientResponse } from '../../core/models/interfaces/patient.model';
 import { IUserResponse } from '../../core/models/interfaces/User.model';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -21,7 +21,7 @@ import { HideForDoctor } from '../../shared/directives/hide-for-doctor';
   styleUrl: './visit.css',
   templateUrl: './visit.html',
 })
-export class Visit implements OnInit {
+export class Visit implements OnInit,OnDestroy {
   isFormVisible:boolean=false
 
   visitStatus=VisitStatus
@@ -37,6 +37,7 @@ export class Visit implements OnInit {
 
   visitForm:VisitModel=new VisitModel()
   visitId:number=0
+  takeUntilSub$=new Subject<void>()
   ngOnInit(): void {
     this.getAllVisits()
     this.patientListObs$=this.patientSrv.getAllPatients()
@@ -46,7 +47,9 @@ export class Visit implements OnInit {
     this.isFormVisible= formVisible
   }
   getAllVisits(){
-    this.visitSrv.getAllVisits().subscribe({
+    this.visitSrv.getAllVisits().pipe(
+      takeUntil(this.takeUntilSub$)
+    ).subscribe({
       next:(res:IVisitListModel[])=>{
         this.visitList.set(res)
       },
@@ -68,7 +71,9 @@ export class Visit implements OnInit {
   onDelete(id:number){
     const isDelete=confirm("Are you sure want to delete!!")
     if(isDelete){
-      this.visitSrv.deleteVisit(id).subscribe({
+      this.visitSrv.deleteVisit(id).pipe(
+        takeUntil(this.takeUntilSub$)
+      ).subscribe({
         next:(res)=>{
           alert("Visit Deleted success")
           this.getAllVisits()
@@ -80,7 +85,9 @@ export class Visit implements OnInit {
     }
   }
   onSaveVisit(){
-    this.visitSrv.createVisit(this.visitForm).subscribe({
+    this.visitSrv.createVisit(this.visitForm).pipe(
+      takeUntil(this.takeUntilSub$)
+    ).subscribe({
       next:(res:IVisitListModel)=>{
         alert("Visit Created success")
         this.getAllVisits()
@@ -97,7 +104,9 @@ export class Visit implements OnInit {
     this.visitId=0
   }
   onUpdateVisit(){
-    this.visitSrv.updateVisit(this.visitForm,this.visitId).subscribe({
+    this.visitSrv.updateVisit(this.visitForm,this.visitId).pipe(
+      takeUntil(this.takeUntilSub$)
+    ).subscribe({
       next:(res:IVisitListModel)=>{
         alert("Visit Updated success")
         this.getAllVisits()
@@ -108,5 +117,9 @@ export class Visit implements OnInit {
         alert("API Error")
       }
     })
+  }
+  ngOnDestroy(): void {
+    this.takeUntilSub$.next()
+    this.takeUntilSub$.subscribe()
   }
 }

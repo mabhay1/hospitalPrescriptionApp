@@ -1,0 +1,12 @@
+@if(touched||dirty||isSubmitted){
+    <!-- @if(errors?.['required']){
+        <div class="text-danger">{{fieldName}} is required</div>
+    }
+    @else if(errors?.['pattern']){
+        <div class="text-danger">{{fieldName}} is not valid</div>
+    }
+    @else if (errors?.['minlength']) {
+        <div class="text-danger">Minimum {{errors?.['minlength'].requiredLength}} characters required</div>
+    } -->
+    <div class="text-danger">{{errors|validationErrorMessage:fieldName}}</div>
+}

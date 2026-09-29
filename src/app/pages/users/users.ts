@@ -1,9 +1,10 @@
-import { Component, ElementRef, inject, OnInit, signal, ViewChild, WritableSignal } from '@angular/core';
+import { Component, DestroyRef, ElementRef, inject, OnInit, signal, ViewChild, WritableSignal } from '@angular/core';
 import { UserService } from '../../core/services/user-service';
 import { IUserModel, IUserResponse } from '../../core/models/interfaces/User.model';
 import { NgClass } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { GlobalConstant } from '../../core/constant/GlobalConstant';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   imports: [NgClass, ReactiveFormsModule],
@@ -20,6 +21,7 @@ export class Users implements OnInit {
   EditUserId:number=0
   rolesList:string[]= GlobalConstant.ROLE_LIST
   @ViewChild('selectedRole') selectedRoleValue!:ElementRef;
+  destroyRef=inject(DestroyRef)
 
   constructor(private fb:FormBuilder){
     this.intializeForm()
@@ -44,7 +46,9 @@ export class Users implements OnInit {
   onSearchRole() {
     const searchRole = this.selectedRoleValue.nativeElement.value
     if (searchRole !== "") {
-      this.userSrv.filterUser(searchRole).subscribe({
+      this.userSrv.filterUser(searchRole).pipe(
+        takeUntilDestroyed(this.destroyRef)
+      ).subscribe({
         next: (res: IUserResponse[]) => {
           this.userList.set(res)
         }
@@ -59,7 +63,9 @@ export class Users implements OnInit {
     this.getUsers()
   }
   getUsers(){
-    this.userSrv.getAllUsers().subscribe({
+    this.userSrv.getAllUsers().pipe(
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe({
       next:(res:IUserResponse[])=>{
        this.userList.set(res) 
       },error:(err:any)=>{
@@ -82,7 +88,9 @@ export class Users implements OnInit {
   }
   onSaveUser(){
     const formValue:IUserModel=this.userForm.value
-    this.userSrv.saveUser(formValue).subscribe({
+    this.userSrv.saveUser(formValue).pipe(
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe({
       next:(res:IUserResponse)=>{
         alert("User Created Successfully")
         this.openCloseUserForm(false)
@@ -109,7 +117,9 @@ export class Users implements OnInit {
   }
   onUpdateUser(){
     const formValue:IUserModel=this.userForm.value;
-    this.userSrv.updateUser(formValue,this.EditUserId).subscribe({
+    this.userSrv.updateUser(formValue,this.EditUserId).pipe(
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe({
       next:(res:IUserResponse)=>{
         alert("User updated successfully")
         this.openCloseUserForm(false)
@@ -123,7 +133,9 @@ export class Users implements OnInit {
   onDeleteUser(id:number){
     const isConfirmDelete:boolean=confirm("Are you sure you want to delete User !!!");
     if(isConfirmDelete){
-      this.userSrv.deleteUser(id).subscribe({
+      this.userSrv.deleteUser(id).pipe(
+        takeUntilDestroyed(this.destroyRef)
+      ).subscribe({
         next:(res)=>{
           alert("User updated successfully")
           this.getUsers()

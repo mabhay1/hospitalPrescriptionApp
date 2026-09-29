@@ -1,10 +1,11 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
 import { DashboardService } from '../../core/services/dashboard-service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { IDashboardModel } from '../../core/models/interfaces/Dashboard.model';
 import { GetInitialsPipe } from '../../shared/pipes/get-initials-pipe';
 import { DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   imports: [GetInitialsPipe,DatePipe,FormsModule],
@@ -33,12 +34,15 @@ export class Dashboard implements OnInit {
   )
   fromDate:string=""
   toDate:string=""
+  destroyRef=inject(DestroyRef)
 
   ngOnInit(): void {
     this.getDashboardData()
   }
   getDashboardData() {
-    this.dashboardSrv.getDashboardData(this.fromDate,this.toDate).subscribe({
+    this.dashboardSrv.getDashboardData(this.fromDate,this.toDate).pipe(
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe({
       next: (res: any) => {
         this.dashboardData.set(res)
       },

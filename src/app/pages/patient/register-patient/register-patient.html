@@ -42,10 +42,16 @@
 					<div class="col-md-6">
 						<label class="form-label" for="fullName">Full name <span aria-hidden="true">*</span></label>
 						<input formControlName="fullName" class="form-control" id="fullName" name="fullName" type="text" placeholder="Enter your full name" autocomplete="name" />
+						<app-show-validation-message [touched]="patientForm.get('fullName')?.touched"
+							[dirty]="patientForm.get('fullName')?.dirty" [errors]="patientForm.controls['fullName'].errors"
+							[fieldName]="'Full Name'"></app-show-validation-message>
 					</div>
 					<div class="col-md-6">
 						<label class="form-label" for="phone">Phone number <span aria-hidden="true">*</span></label>
 						<input formControlName="phone" class="form-control" id="phone" name="phone" type="tel" placeholder="Enter your phone number" autocomplete="tel" />
+						<app-show-validation-message [touched]="getControl('phone')?.touched"
+							[dirty]="getControl('phone')?.dirty" [errors]="getControl('phone')?.errors"
+							[fieldName]="'Phone Number'"></app-show-validation-message>
 					</div>
 					<div class="col-md-6">
 						<label class="form-label" for="gender">Gender <span aria-hidden="true">*</span></label>
@@ -55,14 +61,23 @@
                                 <option>{{item}}</option>
                             }
 						</select>
+						<app-show-validation-message [touched]="getControl('gender')?.touched"
+							[dirty]="getControl('gender')?.dirty" [errors]="getControl('gender')?.errors"
+							[fieldName]="'Gender'"></app-show-validation-message>
 					</div>
 					<div class="col-md-6">
 						<label class="form-label" for="dateOfBirth">Date of birth <span aria-hidden="true">*</span></label>
 						<input class="form-control" formControlName="dateOfBirth" id="dateOfBirth" name="dateOfBirth" type="date" />
+						<app-show-validation-message [touched]="getControl('dateOfBirth')?.touched"
+							[dirty]="getControl('dateOfBirth')?.dirty" [errors]="getControl('dateOfBirth')?.errors"
+							[fieldName]="'Date of Birth'"></app-show-validation-message>
 					</div>
 					<div class="col-12">
 						<label class="form-label" for="address">Address <span aria-hidden="true">*</span></label>
 						<textarea class="form-control" formControlName="address" id="address" name="address" rows="3" placeholder="Enter your complete address"></textarea>
+						<app-show-validation-message [touched]="getControl('address')?.touched"
+							[dirty]="getControl('address')?.dirty" [errors]="getControl('address')?.errors"
+							[fieldName]="'Address'"></app-show-validation-message>
 					</div>
 					<div class="col-12 d-flex flex-column flex-sm-row align-items-sm-center justify-content-between gap-3 pt-2">
                         <button (click)="onResetForm()" class="btn btn-secondary" type="button">Cancel</button>						

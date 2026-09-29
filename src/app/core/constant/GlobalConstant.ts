@@ -15,6 +15,7 @@ export const GlobalConstant = {
         ADD_PRESCRIPTION_ITEM:'prescription-items',
         GET_DASHBOARD:'dashboard'
     },
+    EMAIL_REGEX:'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9-]{3,}\.[a-zA-Z]{2,}$',
     LOGIN_USER_SESSION_KEY:'hospitalUser',
     LOGIN_TOKEN_SESSION_KEY:'hospitalUserToken',
     ROLE_LIST:[Role.ADMIN,Role.DOCTOR,Role.RECEPTIONIST],

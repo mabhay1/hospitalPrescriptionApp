@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { VisitService } from '../../core/services/visit-service';
 import { PatientService } from '../../core/services/patient-service';
@@ -14,6 +14,7 @@ import { Observable } from 'rxjs';
 import { IMedicineResponse } from '../../core/models/interfaces/medicine.model';
 import { GlobalConstant } from '../../core/constant/GlobalConstant';
 import { VisitModel } from '../../core/models/classes/Visit.model';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   imports: [GetInitialsPipe,DatePipe,NgClass,ReactiveFormsModule,AsyncPipe,FormsModule],
@@ -43,8 +44,11 @@ export class OpenVisit implements OnInit {
   medicineFormList=GlobalConstant.MEDICINE_FORM_LIST
   visitStatusList=GlobalConstant.VISIT_STATUS_LIST
   visitStatus=VisitStatus
+  destroyRef=inject(DestroyRef)
   constructor(private activatedRoute:ActivatedRoute,private router:Router){
-    this.activatedRoute.params.subscribe({
+    this.activatedRoute.params.pipe(
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe({
       next:(res:any)=>{
         this.currentPatientId =Number(res.patientId)
         if(this.currentPatientId!==0){
@@ -106,7 +110,9 @@ export class OpenVisit implements OnInit {
     this.router.navigate(['/open-visit',event.target.value])
   }
   getCurrentPatientById(){
-    this.patientSrv.getPatientById(this.currentPatientId).subscribe({
+    this.patientSrv.getPatientById(this.currentPatientId).pipe(
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe({
       next:(res:IPatientResponse)=>{
         this.currentPatientDetail.set(res)
       },
@@ -116,7 +122,9 @@ export class OpenVisit implements OnInit {
     })
   }
   getCurrentPatientVisits(){
-    this.visitSrv.getVisitsByPatientId(this.currentPatientId).subscribe({
+    this.visitSrv.getVisitsByPatientId(this.currentPatientId).pipe(
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe({
       next:(res:IVisitListModel[])=>{
         this.currentPatientVisits.set(res)
         const actualVisits=structuredClone(res)
@@ -147,7 +155,9 @@ export class OpenVisit implements OnInit {
     visitObj.symptoms= this.selectedVisit?.symptoms,
     visitObj.diagnosis= this.selectedVisit?.diagnosis;
     visitObj.visitStatus= event.target.value;
-    this.visitSrv.updateVisit(visitObj,this.selectedVisit?.visitId).subscribe({
+    this.visitSrv.updateVisit(visitObj,this.selectedVisit?.visitId).pipe(
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe({
       next:(res:IVisitListModel)=>{
         alert("Status updated")
         this.getCurrentPatientVisits()
@@ -159,7 +169,9 @@ export class OpenVisit implements OnInit {
   onSavePrescription(){
     const formObj:IPrescriptionModel=this.prescriptionForm.value
     formObj.visitId=this.selectedVisit?.visitId
-    this.visitSrv.addPrescriptionItem(formObj).subscribe({
+    this.visitSrv.addPrescriptionItem(formObj).pipe(
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe({
       next:(res:IPrescriptionItem)=>{
         alert("Medicine added successfully")
         this.getCurrentPatientVisits()

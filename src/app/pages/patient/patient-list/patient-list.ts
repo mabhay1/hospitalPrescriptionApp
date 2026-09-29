@@ -1,10 +1,12 @@
 import { DatePipe, NgClass } from '@angular/common';
-import { Component, inject, OnInit, signal, ViewChild, WritableSignal } from '@angular/core';
+import { Component, DestroyRef, inject, OnDestroy, OnInit, signal, ViewChild, WritableSignal } from '@angular/core';
 import { RegisterPatient } from '../register-patient/register-patient';
 import { IPatientResponse } from '../../../core/models/interfaces/patient.model';
 import { PatientService } from '../../../core/services/patient-service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { HideForDoctor } from '../../../shared/directives/hide-for-doctor';
+import { Subscription } from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   imports: [NgClass,RegisterPatient,DatePipe,HideForDoctor],
@@ -12,11 +14,13 @@ import { HideForDoctor } from '../../../shared/directives/hide-for-doctor';
   styleUrl: './patient-list.css',
   templateUrl: './patient-list.html',
 })
-export class PatientList implements OnInit {
+export class PatientList implements OnInit,OnDestroy {
   isPatientFormVisible:boolean=true
   patientList:WritableSignal<IPatientResponse[]>=signal<IPatientResponse[]>([])
   patientSrv=inject(PatientService)
   @ViewChild(RegisterPatient) regPatient!:RegisterPatient
+  subscriptionArray:Subscription[]=[]
+  destroySrv=inject(DestroyRef)
 
   ngOnInit(): void {
     this.getAllPatients()
@@ -26,7 +30,7 @@ export class PatientList implements OnInit {
     this.isPatientFormVisible=formVisible
   }
   getAllPatients(){
-    this.patientSrv.getAllPatients().subscribe({
+    const subs=this.patientSrv.getAllPatients().subscribe({
       next:(res:IPatientResponse[])=>{
         this.patientList.set(res)
       },
@@ -34,9 +38,10 @@ export class PatientList implements OnInit {
         alert("API Error")
       }
     })
+    this.subscriptionArray.push(subs)
   }
   onEditPatient(id:number){
-    this.patientSrv.getPatientById(id).subscribe({
+    const subs=this.patientSrv.getPatientById(id).subscribe({
       next:(res:IPatientResponse)=>{
         const patientObj = {
           fullName: res.fullName,
@@ -52,11 +57,14 @@ export class PatientList implements OnInit {
 
       }
     })
+    this.subscriptionArray.push(subs)
   }
   onDeletePatient(id:number){
     const isDelete=confirm("Are you sure want to delete!!")
     if(isDelete){
-      this.patientSrv.removePatient(id).subscribe({
+      this.patientSrv.removePatient(id).pipe(
+        takeUntilDestroyed(this.destroySrv)
+      ).subscribe({
         next:(res)=>{
           alert("Patient Deleted success")
           this.getAllPatients()
@@ -70,5 +78,9 @@ export class PatientList implements OnInit {
   onPatientRegister(){
     this.getAllPatients()
   }
-
+  ngOnDestroy(): void {
+    this.subscriptionArray.forEach((subs)=>{
+      subs.unsubscribe()
+    })
+  }
 }

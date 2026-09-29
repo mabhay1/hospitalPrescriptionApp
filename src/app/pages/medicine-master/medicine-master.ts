@@ -1,4 +1,4 @@
-import { Component, ElementRef, inject, OnInit, signal, ViewChild, WritableSignal } from '@angular/core';
+import { Component, DestroyRef, ElementRef, inject, OnDestroy, OnInit, signal, ViewChild, WritableSignal } from '@angular/core';
 import { form, FormField, minLength, required, schema } from '@angular/forms/signals';
 import { IMedicineModel, IMedicineResponse } from '../../core/models/interfaces/medicine.model';
 import { MedicineMasterService } from '../../core/services/medicine-master-service';
@@ -6,6 +6,8 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { GlobalConstant } from '../../core/constant/GlobalConstant';
 import { NgFor } from '@angular/common';
 import { UserService } from '../../core/services/user-service';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 
 @Component({
   imports: [FormField, NgFor],
@@ -13,7 +15,7 @@ import { UserService } from '../../core/services/user-service';
   styleUrl: './medicine-master.css',
   templateUrl: './medicine-master.html',
 })
-export class MedicineMaster implements OnInit {
+export class MedicineMaster implements OnInit,OnDestroy {
   @ViewChild('medicineModal') medicineModel!:ElementRef;
   @ViewChild('searchInput') searchInput!:ElementRef;
   medicineList:WritableSignal<IMedicineResponse[]>=signal<IMedicineResponse[]>([])
@@ -31,8 +33,13 @@ export class MedicineMaster implements OnInit {
   currentMedicineid:number=0
   medicineFormList=GlobalConstant.MEDICINE_FORM_LIST
   userSrv=inject(UserService)
+  subscriptionArray:Subscription[]=[]
+  destroyRef=inject(DestroyRef)
+  takeUntilSub$=new Subject<void>()
   constructor(private medicineSrv: MedicineMasterService) {
-    this.userSrv.searchInput$.subscribe({
+    this.userSrv.searchInput$.pipe(
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe({
       next: (res: string) => {
         if (res !== '') {
           this.medicineSrv.filterMedicine(res).subscribe({
@@ -58,7 +65,9 @@ export class MedicineMaster implements OnInit {
     if (this.searchInput) {
       const searchValue = this.searchInput.nativeElement.value
       if (searchValue !== '') {
-        this.medicineSrv.filterMedicine(searchValue).subscribe({
+        this.medicineSrv.filterMedicine(searchValue).pipe(
+          takeUntil(this.takeUntilSub$)
+        ).subscribe({
           next: (res: IMedicineResponse[]) => {
             this.medicineList.set(res)
           },
@@ -88,25 +97,29 @@ export class MedicineMaster implements OnInit {
     }
   }
   getAllMedicines(){
-    this.medicineSrv.getAllMedicines().subscribe({
+   const subs=this.medicineSrv.getAllMedicines().subscribe({
       next:(res:IMedicineResponse[])=>{
         this.medicineList.set(res)
       }
     })
+    this.subscriptionArray.push(subs)
   }
   onEditMedicine(id:number){
     this.currentMedicineid=id
-    this.medicineSrv.getMedicineById(id).subscribe({
+    const subs=this.medicineSrv.getMedicineById(id).subscribe({
       next:(res:IMedicineResponse)=>{
         this.medicineObj.set(res)
         this.openCloseMedicineModel(true)
       }
     })
+    this.subscriptionArray.push(subs)
   }
   onDeleteMedicine(id:number){
     const isDelete=confirm("Are you sure you want to delete!!")
     if(isDelete){
-      this.medicineSrv.deleteMedicine(id).subscribe({
+      this.medicineSrv.deleteMedicine(id).pipe(
+        takeUntilDestroyed(this.destroyRef)
+      ).subscribe({
         next:(res)=>{
           alert("Medicine Deleted Successfully")
           this.getAllMedicines()
@@ -115,11 +128,6 @@ export class MedicineMaster implements OnInit {
     }
   }
   onResetForm() {
-    // this.medicineObj.set({
-    //   name: "",
-    //   strength: "",
-    //   form: ""
-    // })
     this.medicineForm().reset({
       name: "",
       strength: "",
@@ -129,7 +137,7 @@ export class MedicineMaster implements OnInit {
   }
   onSaveMedicine(){
     const formValue= this.medicineForm().value()
-    this.medicineSrv.createMedicine(formValue).subscribe({
+    const subs=this.medicineSrv.createMedicine(formValue).subscribe({
       next:(res:IMedicineResponse)=>{
         alert("Medicine updated")
         this.onResetForm()
@@ -140,10 +148,11 @@ export class MedicineMaster implements OnInit {
         alert("API Error")
       }
     })
+    this.subscriptionArray.push(subs)
   }
   onUpdateMedicine(){
     const formValue:IMedicineModel=this.medicineForm().value()
-    this.medicineSrv.updateMedicine(this.currentMedicineid,formValue).subscribe({
+    const subs=this.medicineSrv.updateMedicine(this.currentMedicineid,formValue).subscribe({
       next:(res:IMedicineResponse)=>{
         alert("Medicine updated successfully")
         this.onResetForm()
@@ -154,6 +163,14 @@ export class MedicineMaster implements OnInit {
         alert("API Error")
       }
     })
+    this.subscriptionArray.push(subs)
+  }
+  ngOnDestroy(): void {
+    this.takeUntilSub$.next()
+    this.subscriptionArray.forEach((subscription)=>{
+      subscription.unsubscribe()
+    })
+    this.takeUntilSub$.unsubscribe()
   }
 
 }

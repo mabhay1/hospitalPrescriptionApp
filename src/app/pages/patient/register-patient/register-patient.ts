@@ -1,13 +1,15 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { Component, DestroyRef, EventEmitter, inject, Input, Output } from '@angular/core';
+import { AbstractControl, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { IPatientModel, IPatientResponse } from '../../../core/models/interfaces/patient.model';
 import { PatientService } from '../../../core/services/patient-service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { NgClass } from '@angular/common';
 import { GlobalConstant } from '../../../core/constant/GlobalConstant';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ShowValidationMessage } from '../../../shared/components/show-validation-message/show-validation-message';
 
 @Component({
-  imports: [ReactiveFormsModule,NgClass],
+  imports: [ReactiveFormsModule, NgClass, ShowValidationMessage],
   selector: 'app-register-patient',
   styleUrl: './register-patient.css',
   templateUrl: './register-patient.html',
@@ -18,16 +20,17 @@ export class RegisterPatient {
   patientForm!:FormGroup;
   patientId:number=0
   genderList=GlobalConstant.GENDER_LIST
+  destroyRef=inject(DestroyRef)
   constructor(private patientSrv:PatientService){
     this.initializeForm()
   }
   initializeForm(){
     this.patientForm=new FormGroup({
-      fullName: new FormControl(""),
-      gender: new FormControl(""),
-      dateOfBirth: new FormControl(""),
-      phone: new FormControl(""),
-      address: new FormControl("")
+      fullName: new FormControl("",[Validators.required,Validators.minLength(3)]),
+      gender: new FormControl("",[Validators.required]),
+      dateOfBirth: new FormControl("",[Validators.required]),
+      phone: new FormControl("",[Validators.required,Validators.minLength(10),Validators.maxLength(10)]),
+      address: new FormControl("",Validators.required)
     })
   }
   onResetForm(){
@@ -36,7 +39,9 @@ export class RegisterPatient {
   }
   onSaveForm(){
     const formValue:IPatientModel=this.patientForm.value
-    this.patientSrv.registerPatient(formValue).subscribe({
+    this.patientSrv.registerPatient(formValue).pipe(
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe({
       next:(res:IPatientResponse)=>{
         alert("Patient Regsitered Success")
         this.onResetForm()
@@ -49,7 +54,9 @@ export class RegisterPatient {
   }
   onUpdateForm(){
     const formValue:IPatientModel=this.patientForm.value
-    this.patientSrv.updatePatient(formValue,this.patientId).subscribe({
+    this.patientSrv.updatePatient(formValue,this.patientId).pipe(
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe({
       next:(res:IPatientResponse)=>{
         alert("Patient Updated Success")
         this.onResetForm()
@@ -59,5 +66,8 @@ export class RegisterPatient {
         alert("API Error")
       }
     })
+  }
+  getControl(control:string){
+    return this.patientForm.get(control)
   }
 }
