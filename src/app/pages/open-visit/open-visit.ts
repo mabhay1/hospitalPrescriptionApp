@@ -151,7 +151,7 @@ export class OpenVisit implements OnInit {
     const visitObj= new VisitModel()
     visitObj.patientId= this.currentPatientId,
     visitObj.doctorId= this.selectedVisit?.doctorId,
-    visitObj.visitDate= new Date(this.selectedVisit?.visitDate),
+    visitObj.visitDate= this.selectedVisit?.visitDate,
     visitObj.symptoms= this.selectedVisit?.symptoms,
     visitObj.diagnosis= this.selectedVisit?.diagnosis;
     visitObj.visitStatus= event.target.value;

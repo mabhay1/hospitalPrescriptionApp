@@ -31,7 +31,6 @@ export class Login implements OnInit,OnDestroy {
   login(){
     this.loginSubject$.pipe(
       tap(()=>{
-        console.log("login clicked")
         this.loader.set(true)
       }),
       exhaustMap(()=>this.userSrv.onLogin(this.loginObj).pipe(
@@ -53,7 +52,6 @@ export class Login implements OnInit,OnDestroy {
     })
   }
   onLoginClicked(loginForm:NgForm){
-    console.log("subject emitted")
     this.isSubmit=true
     if(loginForm.valid){
       this.loginSubject$.next()

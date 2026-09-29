@@ -62,7 +62,7 @@ export class Visit implements OnInit,OnDestroy {
     this.visitId=obj.visitId
     this.visitForm.patientId=obj.patientId
     this.visitForm.doctorId = obj.doctorId;
-    this.visitForm.visitDate= new Date(obj.visitDate);
+    this.visitForm.visitDate= obj.visitDate;
     this.visitForm.symptoms = obj.symptoms;
     this.visitForm.diagnosis = obj.diagnosis;
     this.visitForm.visitStatus = obj.visitStatus;
