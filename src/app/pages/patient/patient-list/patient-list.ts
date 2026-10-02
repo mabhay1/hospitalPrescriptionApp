@@ -1,5 +1,5 @@
 import { DatePipe, NgClass } from '@angular/common';
-import { Component, DestroyRef, inject, OnDestroy, OnInit, signal, ViewChild, WritableSignal } from '@angular/core';
+import { Component, DestroyRef, inject, OnDestroy, OnInit, signal, WritableSignal } from '@angular/core';
 import { RegisterPatient } from '../register-patient/register-patient';
 import { IPatientResponse } from '../../../core/models/interfaces/patient.model';
 import { PatientService } from '../../../core/services/patient-service';
@@ -18,7 +18,7 @@ export class PatientList implements OnInit,OnDestroy {
   isPatientFormVisible:boolean=true
   patientList:WritableSignal<IPatientResponse[]>=signal<IPatientResponse[]>([])
   patientSrv=inject(PatientService)
-  @ViewChild(RegisterPatient) regPatient!:RegisterPatient
+  editPatientId:number=0
   subscriptionArray:Subscription[]=[]
   destroySrv=inject(DestroyRef)
 
@@ -41,23 +41,7 @@ export class PatientList implements OnInit,OnDestroy {
     this.subscriptionArray.push(subs)
   }
   onEditPatient(id:number){
-    const subs=this.patientSrv.getPatientById(id).subscribe({
-      next:(res:IPatientResponse)=>{
-        const patientObj = {
-          fullName: res.fullName,
-          gender: res.gender,
-          dateOfBirth: new Date(res.dateOfBirth).toISOString().split("T")[0],
-          phone: res.phone,
-          address: res.address
-        }
-        this.regPatient.patientId=res.patientId
-        this.regPatient.patientForm.setValue(patientObj)
-      },
-      error:(err:HttpErrorResponse)=>{
-
-      }
-    })
-    this.subscriptionArray.push(subs)
+    this.editPatientId=id
   }
   onDeletePatient(id:number){
     const isDelete=confirm("Are you sure want to delete!!")
