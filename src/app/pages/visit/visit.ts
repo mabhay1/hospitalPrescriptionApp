@@ -14,9 +14,11 @@ import { FormsModule } from '@angular/forms';
 import { GlobalConstant } from '../../core/constant/GlobalConstant';
 import { RouterLink } from '@angular/router';
 import { HideForDoctor } from '../../shared/directives/hide-for-doctor';
+import { HideForReceptionist } from '../../shared/directives/hide-for-receptionist';
+import { NaPipe } from '../../shared/pipes/na-pipe';
 
 @Component({
-  imports: [DatePipe,NgClass,SlicePipe,AsyncPipe,FormsModule,RouterLink,HideForDoctor],
+  imports: [DatePipe,NgClass,SlicePipe,AsyncPipe,FormsModule,RouterLink,HideForDoctor,HideForReceptionist,NaPipe],
   selector: 'app-visit',
   styleUrl: './visit.css',
   templateUrl: './visit.html',

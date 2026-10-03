@@ -59,10 +59,10 @@
                                                                                 'text-bg-danger':item.visitStatus===visitStatus.CLOSED,
                                                                             }">{{item.visitStatus}}</span>
                                     </td>
-                                    <td>{{item.symptoms|slice:0:10}}</td>
-                                    <td>{{item.diagnosis|slice:0:10}}</td>
+                                    <td>{{item.symptoms|slice:0:10|na}}</td>
+                                    <td>{{item.diagnosis|slice:0:10|na}}</td>
                                     <td class="text-end pe-3">
-                                        <button class="btn btn-sm btn-outline-success me-1" type="button" [routerLink]="'/open-visit/'+item.patientId">Open</button>
+                                        <button class="btn btn-sm btn-outline-success me-1" type="button" appHideForReceptionist [routerLink]="'/open-visit/'+item.patientId">Open</button>
                                         <button appHideForDoctor class="btn btn-sm btn-outline-primary me-1" type="button" (click)="onEdit(item)">Edit</button>
                                         <button appHideForDoctor class="btn btn-sm btn-outline-danger" type="button" (click)="onDelete(item.visitId)">Delete</button>
                                     </td>

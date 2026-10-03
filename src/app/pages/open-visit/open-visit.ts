@@ -8,16 +8,18 @@ import { GetInitialsPipe } from '../../shared/pipes/get-initials-pipe';
 import { AsyncPipe, DatePipe, NgClass } from '@angular/common';
 import { IPrescriptionItem, IPrescriptionModel, IVisitListModel } from '../../core/models/interfaces/IVisit.model';
 import { VisitStatus } from '../../core/enum/Role.enum';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MedicineMasterService } from '../../core/services/medicine-master-service';
 import { Observable } from 'rxjs';
 import { IMedicineResponse } from '../../core/models/interfaces/medicine.model';
 import { GlobalConstant } from '../../core/constant/GlobalConstant';
 import { VisitModel } from '../../core/models/classes/Visit.model';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { NaPipe } from '../../shared/pipes/na-pipe';
+import { ShowValidationMessage } from '../../shared/components/show-validation-message/show-validation-message';
 
 @Component({
-  imports: [GetInitialsPipe,DatePipe,NgClass,ReactiveFormsModule,AsyncPipe,FormsModule],
+  imports: [GetInitialsPipe,DatePipe,NgClass,ReactiveFormsModule,AsyncPipe,FormsModule,NaPipe,ShowValidationMessage],
   selector: 'app-open-visit',
   styleUrl: './open-visit.css',
   templateUrl: './open-visit.html',
@@ -44,6 +46,7 @@ export class OpenVisit implements OnInit {
   medicineFormList=GlobalConstant.MEDICINE_FORM_LIST
   visitStatusList=GlobalConstant.VISIT_STATUS_LIST
   visitStatus=VisitStatus
+  isSubmittedPrescriptionForm:boolean=false
   destroyRef=inject(DestroyRef)
   constructor(private activatedRoute:ActivatedRoute,private router:Router){
     this.activatedRoute.params.pipe(
@@ -95,10 +98,10 @@ export class OpenVisit implements OnInit {
     })
     this.prescriptionForm = new FormGroup({
       visitId: new FormControl(0),
-      medicineId: new FormControl(0),
-      dosage: new FormControl(""),
-      frequency: new FormControl(""),
-      durationDays: new FormControl(0),
+      medicineId: new FormControl("",[Validators.required]),
+      dosage: new FormControl("",[Validators.required]),
+      frequency: new FormControl("",[Validators.required]),
+      durationDays: new FormControl(0,[Validators.required]),
       instructions: new FormControl("")
     })
   }
@@ -167,22 +170,29 @@ export class OpenVisit implements OnInit {
     })
   }
   onSavePrescription(){
+    this.isSubmittedPrescriptionForm=true
     const formObj:IPrescriptionModel=this.prescriptionForm.value
     formObj.visitId=this.selectedVisit?.visitId
-    this.visitSrv.addPrescriptionItem(formObj).pipe(
-      takeUntilDestroyed(this.destroyRef)
-    ).subscribe({
-      next:(res:IPrescriptionItem)=>{
-        alert("Medicine added successfully")
-        this.getCurrentPatientVisits()
-        this.onResetPrescriptionForm()
-      },
-      error:(err:HttpErrorResponse)=>{
-        alert("API Error")
+    if(this.prescriptionForm.valid){
+      this.visitSrv.addPrescriptionItem(formObj).pipe(
+        takeUntilDestroyed(this.destroyRef)
+      ).subscribe({
+        next:(res:IPrescriptionItem)=>{
+          alert("Medicine added successfully")
+          this.getCurrentPatientVisits()
+          this.onResetPrescriptionForm()
+        },
+        error:(err:HttpErrorResponse)=>{
+          alert("API Error")
+        }
+      })
       }
-    })
   }
   onResetPrescriptionForm(){
     this.prescriptionForm.reset()
+    this.isSubmittedPrescriptionForm=false
+  }
+  getControlPrescriptionForm(control:string){
+    return this.prescriptionForm.controls[control]
   }
 }

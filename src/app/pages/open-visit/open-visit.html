@@ -142,7 +142,7 @@
                                                 <td>{{item.dosage}}</td>
                                                 <td>{{item.frequency}}</td>
                                                 <td>{{item.durationDays}}</td>
-                                                <td>{{item.instructions}}</td>
+                                                <td>{{item.instructions|na:'--'}}</td>
                                             </tr>}
                                             @empty {
                                             <tr>
@@ -166,17 +166,27 @@
                                         <div class="col-12">
                                             <label class="form-label small fw-semibold">Medicine name</label>
                                             <select class="form-select form-select-sm" formControlName="medicineId">
-                                                <option value="0" selected disabled>Select medicine</option>
+                                                <option value="" selected disabled>Select medicine</option>
                                                 @for (item of medicineListObs$|async; track $index) {
                                                 <option [value]="item.medicineId">{{item.name}} - {{item.strength}}
                                                 </option>
                                                 }
                                             </select>
+                                            <app-show-validation-message [touched]="getControlPrescriptionForm('medicineId').touched"
+                                                [dirty]="getControlPrescriptionForm('medicineId').dirty"
+                                                [errors]="getControlPrescriptionForm('medicineId').errors"
+                                                [fieldName]="'Medicine'"
+                                                [isSubmitted]="isSubmittedPrescriptionForm"></app-show-validation-message>
                                         </div>
                                         <div class="col-6">
                                             <label class="form-label small fw-semibold">Dosage</label>
                                             <input class="form-control form-control-sm" formControlName="dosage"
                                                 placeholder="1 Tablet" />
+                                            <app-show-validation-message [touched]="getControlPrescriptionForm('dosage').touched"
+                                                [dirty]="getControlPrescriptionForm('dosage').dirty"
+                                                [errors]="getControlPrescriptionForm('dosage').errors"
+                                                [fieldName]="'Dosage'"
+                                                [isSubmitted]="isSubmittedPrescriptionForm"></app-show-validation-message>
                                         </div>
                                         <div class="col-6">
                                             <label class="form-label small fw-semibold">Frequency</label>
@@ -186,11 +196,21 @@
                                                 <option>{{item}}</option>
                                                 }
                                             </select>
+                                            <app-show-validation-message [touched]="getControlPrescriptionForm('frequency').touched"
+                                                [dirty]="getControlPrescriptionForm('frequency').dirty"
+                                                [errors]="getControlPrescriptionForm('frequency').errors"
+                                                [fieldName]="'Frequency'"
+                                                [isSubmitted]="isSubmittedPrescriptionForm"></app-show-validation-message>
                                         </div>
                                         <div class="col-6">
                                             <label class="form-label small fw-semibold">Duration</label>
                                             <input class="form-control form-control-sm" formControlName="durationDays"
                                                 type="number" />
+                                            <app-show-validation-message [touched]="getControlPrescriptionForm('durationDays').touched"
+                                                [dirty]="getControlPrescriptionForm('durationDays').dirty"
+                                                [errors]="getControlPrescriptionForm('durationDays').errors"
+                                                [fieldName]="'Duration'"
+                                                [isSubmitted]="isSubmittedPrescriptionForm"></app-show-validation-message>
                                         </div>
                                         <div class="col-6">
                                             <label class="form-label small fw-semibold">Instruction</label>

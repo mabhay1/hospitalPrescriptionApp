@@ -4,7 +4,17 @@ import { Pipe, PipeTransform } from '@angular/core';
   name: 'na',
 })
 export class NaPipe implements PipeTransform {
-  transform(value: unknown, ...args: unknown[]): unknown {
-    return null;
+  transform(value: unknown, defaultPlaceholder?:string): unknown {
+    if(value===undefined||value===''||value===null){
+      if(defaultPlaceholder===undefined){
+        return 'NA'
+      }
+      else{
+        return defaultPlaceholder
+      }
+    }
+    else{
+      return value
+    }
   }
 }
